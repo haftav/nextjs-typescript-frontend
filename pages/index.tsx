@@ -1,5 +1,4 @@
 import React, {FunctionComponent, useContext, useState} from 'react';
-import {Button, Divider, Input, Box} from '@chakra-ui/core';
 import fetch from 'isomorphic-fetch';
 
 import {AuthContext} from './_app';

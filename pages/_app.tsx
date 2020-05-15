@@ -1,18 +1,20 @@
 import {ThemeProvider, CSSReset} from '@chakra-ui/core';
 
-import React, {useState} from 'react';
+import React, {Dispatch, SetStateAction, useState} from 'react';
 import {AppProps} from 'next/app';
 
-export const AuthContext = React.createContext({
-  user: null,
-  setUser: null,
-  token: null,
-  setToken: null,
-});
+import {User} from '../models';
+
+export const AuthContext = React.createContext<{
+  user?: User;
+  setUser?: Dispatch<SetStateAction<User>>;
+  token?: string;
+  setToken?: Dispatch<SetStateAction<string>>;
+}>({});
 
 function MyApp({Component, pageProps}: AppProps) {
-  const [user, setUser] = useState({});
-  const [token, setToken] = useState({});
+  const [user, setUser] = useState<User>(null);
+  const [token, setToken] = useState<string>(null);
   return (
     <AuthContext.Provider
       value={{
