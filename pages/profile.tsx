@@ -4,8 +4,7 @@ import fetch from 'isomorphic-fetch';
 import {AuthContext} from './_app';
 
 const Profile: FunctionComponent<{}> = () => {
-  const authContext = useContext(AuthContext);
-  const [user, setUser] = useState(null);
+  const {user, token} = useContext(AuthContext);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -13,9 +12,20 @@ const Profile: FunctionComponent<{}> = () => {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
         },
       });
+      if (!response.ok) {
+        return;
+      }
+      console.log('SUCCESS!');
       const data = await response.json();
+      console.log(data);
+
+      if (!data) {
+        console.log('Not allowed');
+      }
+
       return data;
     };
 
