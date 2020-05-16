@@ -2,7 +2,7 @@ import React, {FunctionComponent, useEffect, useState, useContext} from 'react';
 import fetch from 'isomorphic-fetch';
 
 import {AuthContext} from './_app';
-import protectedRoute from '../components/protectedRoute';
+import withAuth from '../components/withAuth';
 
 const Profile: FunctionComponent<{}> = () => {
   const {user, token} = useContext(AuthContext);
@@ -35,4 +35,4 @@ const Profile: FunctionComponent<{}> = () => {
   return <div>{user ? user.username : 'no user found'}</div>;
 };
 
-export default protectedRoute(Profile);
+export default withAuth(Profile);

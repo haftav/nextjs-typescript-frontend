@@ -2,7 +2,15 @@ import React, {useContext, useState, useEffect} from 'react';
 import {useRouter} from 'next/router';
 import {AuthContext} from '../pages/_app';
 
-const protectedRoute = (Component) => {
+interface WithAuthParams {
+  shouldRedirect?: boolean;
+  redirectPath?: string;
+}
+
+const withAuth = (
+  Component,
+  params: WithAuthParams = {shouldRedirect: true, redirectPath: '/'}
+) => {
   return function WithAuth() {
     const [loading, setLoading] = useState<boolean>(true);
     const router = useRouter();
@@ -19,7 +27,10 @@ const protectedRoute = (Component) => {
         });
 
         if (!response.ok) {
-          router.push('/');
+          if (params.shouldRedirect) {
+            router.push(params.redirectPath);
+          }
+          setLoading(false);
           return;
         }
 
@@ -45,4 +56,4 @@ const protectedRoute = (Component) => {
   // should add getInitialProps implementation to check auth on server first
 };
 
-export default protectedRoute;
+export default withAuth;
