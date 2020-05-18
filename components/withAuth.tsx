@@ -7,6 +7,8 @@ interface WithAuthParams {
   redirectPath?: string;
 }
 
+// need to update this so page is server rendered on landing page
+
 const withAuth = (
   Component,
   params: WithAuthParams = {shouldRedirect: true, redirectPath: '/'}
@@ -29,6 +31,7 @@ const withAuth = (
         if (!response.ok) {
           if (params.shouldRedirect) {
             router.push(params.redirectPath);
+            return;
           }
           setLoading(false);
           return;
@@ -54,6 +57,8 @@ const withAuth = (
   };
 
   // should add getInitialProps implementation to check auth on server first
+  // if on server, get data from token endpoint and pass in as prop
+  // if on client, pass in data from context if it exists
 };
 
 export default withAuth;
