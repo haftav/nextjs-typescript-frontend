@@ -3,6 +3,7 @@ import fetch from 'isomorphic-fetch';
 
 import {AuthContext} from './_app';
 import withAuth from '../components/withAuth';
+import Layout from '../components/Layout';
 import SkillLevel from '../components/SkillLevel';
 
 const Profile: FunctionComponent<{}> = () => {
@@ -35,7 +36,7 @@ const Profile: FunctionComponent<{}> = () => {
   }, []);
 
   return (
-    <div>
+    <Layout>
       <h1>{user.username}</h1>
       <div>
         {loading
@@ -47,7 +48,7 @@ const Profile: FunctionComponent<{}> = () => {
               </div>
             ))}
       </div>
-    </div>
+    </Layout>
   );
 };
 

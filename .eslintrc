@@ -46,6 +46,7 @@
           }
         ],
         "@typescript-eslint/no-unused-vars": "warn",
-        "prettier/prettier": "error"
+        "prettier/prettier": "error",
+        "react/prop-types": [0]
     }
 }
