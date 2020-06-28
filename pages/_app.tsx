@@ -2,6 +2,7 @@ import {ThemeProvider, CSSReset} from '@chakra-ui/core';
 
 import React, {Dispatch, SetStateAction, useState} from 'react';
 import {AppProps} from 'next/app';
+import Head from 'next/head';
 
 import {User} from '../models';
 
@@ -24,6 +25,12 @@ function MyApp({Component, pageProps}: AppProps) {
         setToken,
       }}
     >
+      <Head>
+        <link
+          href='https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap'
+          rel='stylesheet'
+        />
+      </Head>
       <ThemeProvider>
         {/* <CSSReset /> */}
         <Component {...pageProps} />

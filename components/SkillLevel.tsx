@@ -23,7 +23,8 @@ interface GradientProps {
 
 const Gradient = styled.div<GradientProps>`
   width: calc(100vw - 50px);
-  height: 50px;
+  height: 25px;
+  border-radius: 10px;
   background: linear-gradient(to right, #3b9cff 0%, #a752ff 33%, #ff9600 66%, #ff4141 100%);
 `;
 
@@ -36,6 +37,7 @@ const SkillLevel: FunctionComponent<Props> = ({rating}) => {
     <div
       css={css`
         width: ${rating * 25}%;
+        border-radius: 10px;
         overflow: hidden;
       `}
     >
