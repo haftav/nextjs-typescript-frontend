@@ -31,7 +31,7 @@ interface Props {
   rating: number;
 }
 
-const Layout: FunctionComponent<Props> = ({rating}) => {
+const SkillLevel: FunctionComponent<Props> = ({rating}) => {
   return (
     <div
       css={css`
@@ -44,4 +44,4 @@ const Layout: FunctionComponent<Props> = ({rating}) => {
   );
 };
 
-export default Layout;
+export default SkillLevel;

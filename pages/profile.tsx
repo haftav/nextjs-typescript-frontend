@@ -6,13 +6,15 @@ import {AuthContext} from './_app';
 import withAuth from '../components/withAuth';
 import Layout from '../components/Layout';
 import SkillLevel from '../components/SkillLevel';
+import {Song} from '../models';
 
 const card = css`
   width: 80%;
+  height: 125px;
   margin: 25px auto;
   background: white;
   border: 1px solid #e4e4e4;
-  border-radius: 10px;
+  border-radius: 35px;
   padding: 10px 25px 10px 25px;
   box-shadow: 1px 4px 15px -11px #626262;
 
@@ -20,11 +22,16 @@ const card = css`
     margin: 0px 0px 5px 0px;
     text-align: left;
   }
+
+  h3 {
+    margin: 0px;
+    text-align: left;
+  }
 `;
 
 const Profile: FunctionComponent<{}> = () => {
   const {user, token} = useContext(AuthContext);
-  const [songs, updateSongs] = useState(null);
+  const [songs, updateSongs] = useState<Song[]>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -60,6 +67,7 @@ const Profile: FunctionComponent<{}> = () => {
           : songs.map((song) => (
               <div key={song.id} css={card}>
                 <h2>{song.songName}</h2>
+                <h3>{song.artist}</h3>
                 <SkillLevel rating={song.skill.value} />
               </div>
             ))}
