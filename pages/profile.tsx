@@ -6,6 +6,7 @@ import {AuthContext} from './_app';
 import withAuth from '../components/withAuth';
 import Layout from '../components/Layout';
 import SkillLevel from '../components/SkillLevel';
+import SongCard from '../components/SongCard';
 import {Song} from '../models';
 
 const card = css`
@@ -22,7 +23,6 @@ const card = css`
   box-shadow: 1px 4px 15px -11px #626262;
 
   .card-heading {
-
   }
 
   h2 {
@@ -73,17 +73,7 @@ const Profile: FunctionComponent<{}> = () => {
     <Layout>
       <h1>{user.username}</h1>
       <div>
-        {loading
-          ? '...loading'
-          : songs.map((song) => (
-              <div key={song.id} css={card}>
-                <div className='card-heading'>
-                  <h2>{song.songName}</h2>
-                  <h3>{song.artist}</h3>
-                </div>
-                <SkillLevel rating={song.skill.value} />
-              </div>
-            ))}
+        {loading ? '...loading' : songs.map((song) => <SongCard key={song.id} song={song} />)}
       </div>
     </Layout>
   );
