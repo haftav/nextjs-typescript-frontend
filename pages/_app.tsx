@@ -16,6 +16,7 @@ export const AuthContext = React.createContext<{
 function MyApp({Component, pageProps}: AppProps) {
   const [user, setUser] = useState<User>(null);
   const [token, setToken] = useState<string>(null);
+
   return (
     <AuthContext.Provider
       value={{

@@ -9,7 +9,7 @@ const LandingPage: FunctionComponent<{}> = () => {
   const [error, setError] = useState(null);
   const {user, setUser, token, setToken} = useContext(AuthContext);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e): Promise<void> => {
     e.preventDefault();
 
     const body = {
@@ -27,7 +27,8 @@ const LandingPage: FunctionComponent<{}> = () => {
     });
 
     if (!response.ok) {
-      return setError('Error logging in');
+      setError('Error logging in');
+      return;
     }
 
     const {data} = await response.json();
