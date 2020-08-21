@@ -1,4 +1,5 @@
 import React, {FunctionComponent, useState} from 'react';
+import {Box} from '@chakra-ui/core';
 import {css} from '@emotion/core';
 
 import SkillLevel from './SkillLevel';
@@ -26,13 +27,13 @@ const card = css`
   h2 {
     margin: 0px 0px 5px 0px;
     text-align: left;
-    font-family: 'Montserrat';
+    /* font-family: 'Montserrat'; */
   }
 
   h3 {
     margin: 0px 0px 10px 0px;
     text-align: left;
-    font-family: 'Montserrat';
+    /* font-family: 'Montserrat'; */
     font-weight: 400;
     font-size: 18px;
   }
@@ -40,11 +41,11 @@ const card = css`
   .bottom {
     width: 100%;
     height: 100px;
-    transform: translateY(100px);
+    /* transform: translateY(100px); */
     border: 1px solid red;
-    position: absolute;
-    bottom: 0;
-    left: 0;
+    /* position: absolute; */
+    /* bottom: 0; */
+    /* left: 0; */
   }
 `;
 
@@ -56,14 +57,14 @@ const SongCard: FunctionComponent<Props> = ({song}) => {
   };
 
   return (
-    <div css={[card]} className={isOpen ? 'card-open' : ''} onClick={handleClick}>
-      <div className='card-heading'>
+    <Box maxW="md" borderWidth="1px" rounded="lg" onClick={handleClick}>
+      <div className="card-heading">
         <h2>{song.songName}</h2>
         <h3>{song.artist}</h3>
       </div>
       <SkillLevel rating={song.skill.value} />
-      {isOpen && <div className='bottom'>I am the bottom</div>}
-    </div>
+      {isOpen && <div className="bottom">I am the bottom</div>}
+    </Box>
   );
 };
 
