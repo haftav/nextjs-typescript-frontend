@@ -1,5 +1,5 @@
 import React, {FunctionComponent, useState} from 'react';
-import {Box} from '@chakra-ui/core';
+import {Box, Heading} from '@chakra-ui/core';
 import {css} from '@emotion/core';
 
 import SkillLevel from './SkillLevel';
@@ -57,11 +57,15 @@ const SongCard: FunctionComponent<Props> = ({song}) => {
   };
 
   return (
-    <Box maxW="md" borderWidth="1px" rounded="lg" onClick={handleClick}>
-      <div className="card-heading">
-        <h2>{song.songName}</h2>
-        <h3>{song.artist}</h3>
-      </div>
+    <Box maxW="3xl" my={5} mx="auto" p="15px" borderWidth="1px" rounded="lg" onClick={handleClick}>
+      <Box mb={5}>
+        <Heading as="h2" size="lg" textAlign="left">
+          {song.songName}
+        </Heading>
+        <Heading as="h3" size="md" textAlign="left">
+          {song.artist}
+        </Heading>
+      </Box>
       <SkillLevel rating={song.skill.value} />
       {isOpen && <div className="bottom">I am the bottom</div>}
     </Box>
