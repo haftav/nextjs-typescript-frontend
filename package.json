@@ -9,9 +9,11 @@
     "@emotion/styled": "^10.0.27",
     "emotion-theming": "^10.0.27",
     "isomorphic-fetch": "^2.2.1",
-    "next": "^9.3.5",
+    "next": "^9.5.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+    "react-query": "^2.9.0",
+    "react-query-devtools": "^2.4.4",
     "swr": "^0.2.0",
     "unfetch": "^4.1.0"
   },

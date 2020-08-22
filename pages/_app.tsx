@@ -1,4 +1,5 @@
 import {ThemeProvider, CSSReset} from '@chakra-ui/core';
+import {ReactQueryDevtools} from 'react-query-devtools';
 
 import React, {Dispatch, SetStateAction, useState} from 'react';
 import {AppProps} from 'next/app';
@@ -36,6 +37,7 @@ function MyApp({Component, pageProps}: AppProps) {
         <CSSReset />
         <Component {...pageProps} />
       </ThemeProvider>
+      <ReactQueryDevtools initialIsOpen />
     </AuthContext.Provider>
   );
 }
