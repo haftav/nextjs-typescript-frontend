@@ -1,5 +1,15 @@
 import React, {FunctionComponent, useState} from 'react';
-import {Collapse, Button, Box, Divider, Heading, Flex, Icon, PseudoBox} from '@chakra-ui/core';
+import {
+  Collapse,
+  Button,
+  Box,
+  Divider,
+  Heading,
+  Flex,
+  Icon,
+  PseudoBox,
+  Text,
+} from '@chakra-ui/core';
 
 import SkillLevel from './SkillLevel';
 import {Song} from '../models';
@@ -12,30 +22,22 @@ const SongCard: FunctionComponent<Props> = ({song}) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const handleClick = (): void => {
-    console.log('toggling');
     setIsOpen((prevState) => !prevState);
   };
 
   return (
-    <Box maxW="3xl" my={5} mx="auto" p="15px 15px 0px 15px" borderWidth="1px" rounded="lg">
-      <Box mb={5}>
+    <Box maxW="3xl" my={5} mx="auto" borderWidth="1px" rounded="lg">
+      <Box mb={5} p="15px 15px 0px 15px">
         <Heading as="h2" size="lg" textAlign="left">
           {song.songName}
         </Heading>
-        <Heading as="h3" size="md" textAlign="left">
+        <Text fontSize="lg" textAlign="left">
           {song.artist}
-        </Heading>
+        </Text>
+        <SkillLevel mt="15px" rating={song.skill.value} />
       </Box>
-      <SkillLevel rating={song.skill.value} />
       <Divider m="25px auto 0px auto" />
-      <PseudoBox
-        as={Flex}
-        justifyContent="center"
-        alignItems="center"
-        h={50}
-        _hover={{cursor: 'pointer'}}
-        onClick={handleClick}
-      >
+      <PseudoBox as="button" w="100%" h={50} _hover={{cursor: 'pointer'}} onClick={handleClick}>
         <Icon
           name="chevron-down"
           size="40px"
@@ -43,7 +45,7 @@ const SongCard: FunctionComponent<Props> = ({song}) => {
           transform={isOpen ? 'rotate(180deg)' : 'rotate(0deg)'}
         />
       </PseudoBox>
-      <Collapse as={Flex} isOpen={isOpen} pb="15px" justifyContent="space-around">
+      <Collapse as={Flex} isOpen={isOpen} pt="15px" pb="15px" justifyContent="space-around">
         <Button w={150}>Beginner</Button>
         <Button w={150}>Intermediate</Button>
         <Button w={150}>Advanced</Button>
