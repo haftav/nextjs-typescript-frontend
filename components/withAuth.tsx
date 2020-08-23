@@ -7,8 +7,7 @@ interface WithAuthParams {
   redirectPath?: string;
 }
 
-// need to update this so page is server rendered on landing page
-
+// need to update this for server rendering
 const withAuth = (
   Component,
   params: WithAuthParams = {shouldRedirect: true, redirectPath: '/'}

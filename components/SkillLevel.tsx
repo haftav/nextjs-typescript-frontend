@@ -1,18 +1,12 @@
 import React, {FunctionComponent} from 'react';
 import {BoxProps, Box} from '@chakra-ui/core';
-import styled from '@emotion/styled';
 import {css} from '@emotion/core';
+
+import Gradient from './Gradient';
 
 interface GradientProps {
   rating: number;
 }
-
-const Gradient = styled.div<GradientProps>`
-  height: 25px;
-  width: calc(100vw - 50px);
-  border-radius: 10px;
-  background: linear-gradient(to right, #3b9cff 0%, #a752ff 33%, #ff9600 66%, #ff4141 100%);
-`;
 
 interface Props extends BoxProps {
   rating: number;

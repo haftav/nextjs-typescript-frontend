@@ -1,5 +1,4 @@
 import React, {FunctionComponent, useContext, useState} from 'react';
-import fetch from 'isomorphic-fetch';
 
 import {AuthContext} from './_app';
 import Layout from '../components/Layout';
@@ -51,11 +50,11 @@ const LandingPage: FunctionComponent<{}> = () => {
           <div>
             <h2>Login</h2>
             <form onSubmit={handleSubmit}>
-              <label htmlFor='username'>Username</label>
-              <input type='text' name='username' />
-              <label htmlFor='password'>Password</label>
-              <input type='password' name='password' />
-              <button type='submit'>Login</button>
+              <label htmlFor="username">Username</label>
+              <input type="text" name="username" />
+              <label htmlFor="password">Password</label>
+              <input type="password" name="password" />
+              <button type="submit">Login</button>
             </form>
           </div>
         )}

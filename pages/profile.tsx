@@ -1,5 +1,4 @@
 import React, {FunctionComponent, useEffect, useState, useContext} from 'react';
-import {css} from '@emotion/core';
 import {useQuery} from 'react-query';
 
 import {AuthContext} from './_app';
