@@ -1,23 +1,27 @@
-import React, {FunctionComponent, useEffect, useState, useContext} from 'react';
+import React, {FunctionComponent} from 'react';
+import {GetServerSideProps} from 'next';
+import {getSession} from 'next-auth/client';
 import {useQuery} from 'react-query';
 
-import {AuthContext} from './_app';
-import withAuth from '../components/withAuth';
 import Layout from '../components/Layout';
 import SongCard from '../components/SongCard';
 import {Song} from '../models';
 
-const Profile: FunctionComponent<{}> = () => {
-  const {user, token} = useContext(AuthContext);
+type Session = {user: {name: string}} | null;
 
+interface Props {
+  session: Session;
+}
+
+const Profile: FunctionComponent<Props> = ({session}) => {
+  const {user} = session;
   const {status, data: songs} = useQuery<Song[]>(
     'songs',
     () => {
-      return fetch('http://localhost:3030/api/songs', {
+      return fetch('/api/songs', {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
         },
       })
         .then((res) => {
@@ -26,31 +30,39 @@ const Profile: FunctionComponent<{}> = () => {
           }
           return res.json();
         })
-        .then((res) => res.data.songs);
+        .then((data) => data.songs);
     },
     {retry: false}
   );
 
   console.log(status);
 
-  if (status === 'error') {
-    return <Layout>An error occurred loading your songs.</Layout>;
-  }
-
-  if (status === 'loading') {
-    return <Layout>Loading songs...</Layout>;
-  }
+  const renderStatus = () => {
+    if (status === 'loading') {
+      return <div>Loading songs...</div>;
+    }
+  };
 
   return (
     <Layout>
-      <h1>{user.username}</h1>
-      <div>
-        {songs.map((song) => (
-          <SongCard key={song.id} song={song} />
-        ))}
-      </div>
+      <h1>{user.name}</h1>
+      {renderStatus()}
+      <div>{songs ? songs.map((song) => <SongCard key={song.id} song={song} />) : null}</div>
     </Layout>
   );
 };
 
-export default withAuth(Profile);
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  const session = await getSession(ctx);
+
+  if (!session) {
+    ctx.res.writeHead(301, {
+      Location: '/',
+    });
+    ctx.res.end();
+  }
+
+  return {props: {session}};
+};
+
+export default Profile;

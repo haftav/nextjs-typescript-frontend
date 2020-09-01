@@ -1,14 +1,17 @@
-import React, {FunctionComponent, useContext, useState} from 'react';
+import React, {FunctionComponent} from 'react';
+import {GetServerSideProps} from 'next';
+import {signIn, getSession} from 'next-auth/client';
 
-import {AuthContext} from './_app';
 import Layout from '../components/Layout';
-import withAuth from '../components/withAuth';
 
-const LandingPage: FunctionComponent<{}> = () => {
-  const [error, setError] = useState(null);
-  const {user, setUser, token, setToken} = useContext(AuthContext);
+type Session = {user: {name: string}} | null;
 
-  const handleSubmit = async (e): Promise<void> => {
+interface Props {
+  session: Session;
+}
+
+const LandingPage: FunctionComponent<Props> = ({session}) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
 
     const body = {
@@ -16,37 +19,17 @@ const LandingPage: FunctionComponent<{}> = () => {
       password: e.currentTarget.password.value,
     };
 
-    const response = await fetch('http://localhost:3030/api/auth/login', {
-      method: 'POST',
-      credentials: 'include',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(body),
-    });
-
-    if (!response.ok) {
-      setError('Error logging in');
-      return;
-    }
-
-    const {data} = await response.json();
-
-    if (error) {
-      setError(null);
-    }
-
-    setToken(data.accessToken);
-    setUser(data.user);
+    signIn('credentials', body);
   };
 
+  console.log('SESSION:', session);
+
   return (
-    <Layout>
+    <Layout session={session}>
       <div>
         <h1>Welcome to my dope app</h1>
-        {error && <h2>There was an error</h2>}
-        {user ? <h2>You are logged in as {user.username}</h2> : null}
-        {!user && (
+        {session ? <h2>You are logged in as {session.user.name}</h2> : null}
+        {!session ? (
           <div>
             <h2>Login</h2>
             <form onSubmit={handleSubmit}>
@@ -57,12 +40,17 @@ const LandingPage: FunctionComponent<{}> = () => {
               <button type="submit">Login</button>
             </form>
           </div>
-        )}
+        ) : null}
       </div>
     </Layout>
   );
 };
 
-export default withAuth(LandingPage, {
-  shouldRedirect: false,
-});
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  const session = await getSession(ctx);
+  console.log('session', session);
+
+  return {props: {session}};
+};
+
+export default LandingPage;

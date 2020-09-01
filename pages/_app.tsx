@@ -1,5 +1,6 @@
 import {ThemeProvider, CSSReset} from '@chakra-ui/core';
 import {ReactQueryDevtools} from 'react-query-devtools';
+import {Provider} from 'next-auth/client';
 
 import React, {Dispatch, SetStateAction, useState} from 'react';
 import {AppProps} from 'next/app';
@@ -14,24 +15,17 @@ export const AuthContext = React.createContext<{
 }>({});
 
 function MyApp({Component, pageProps}: AppProps) {
-  const [user, setUser] = useState<User>(null);
-  const [token, setToken] = useState<string>(null);
+  // const [user, setUser] = useState<User>(null);
+  // const [token, setToken] = useState<string>(null);
 
   return (
-    <AuthContext.Provider
-      value={{
-        user,
-        setUser,
-        token,
-        setToken,
-      }}
-    >
+    <Provider session={pageProps.session}>
       <ThemeProvider>
         <CSSReset />
         <Component {...pageProps} />
       </ThemeProvider>
       <ReactQueryDevtools initialIsOpen={false} />
-    </AuthContext.Provider>
+    </Provider>
   );
 }
 
