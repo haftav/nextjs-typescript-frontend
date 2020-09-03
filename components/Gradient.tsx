@@ -40,7 +40,7 @@ const Gradient: FunctionComponent<GradientProps> = ({rating}) => {
   const id: string = useMemo(() => uuidv4(), []);
   const gradient = gradients[rating];
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" version="1.1" style={{width: '100%', height: 25}}>
+    <svg xmlns="http://www.w3.org/2000/svg" version="1.1" style={{width: '100%', height: 10}}>
       <defs>
         <linearGradient spreadMethod="pad" id={id} x1="0%" y1="0%" x2="100%" y2="0%">
           <stop

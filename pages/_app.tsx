@@ -1,37 +1,24 @@
 import {ThemeProvider, CSSReset} from '@chakra-ui/core';
 import {ReactQueryDevtools} from 'react-query-devtools';
+import {ReactQueryConfigProvider} from 'react-query';
+import {Provider} from 'next-auth/client';
 
-import React, {Dispatch, SetStateAction, useState} from 'react';
+import React from 'react';
 import {AppProps} from 'next/app';
 
-import {User} from '../models';
-
-export const AuthContext = React.createContext<{
-  user?: User;
-  setUser?: Dispatch<SetStateAction<User>>;
-  token?: string;
-  setToken?: Dispatch<SetStateAction<string>>;
-}>({});
+const queryConfig = {queries: {refetchOnWindowFocus: false}};
 
 function MyApp({Component, pageProps}: AppProps) {
-  const [user, setUser] = useState<User>(null);
-  const [token, setToken] = useState<string>(null);
-
   return (
-    <AuthContext.Provider
-      value={{
-        user,
-        setUser,
-        token,
-        setToken,
-      }}
-    >
-      <ThemeProvider>
-        <CSSReset />
-        <Component {...pageProps} />
-      </ThemeProvider>
-      <ReactQueryDevtools initialIsOpen={false} />
-    </AuthContext.Provider>
+    <Provider session={pageProps.session}>
+      <ReactQueryConfigProvider config={queryConfig}>
+        <ThemeProvider>
+          <CSSReset />
+          <Component {...pageProps} />
+        </ThemeProvider>
+        <ReactQueryDevtools initialIsOpen={false} />
+      </ReactQueryConfigProvider>
+    </Provider>
   );
 }
 

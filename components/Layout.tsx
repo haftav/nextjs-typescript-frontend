@@ -1,22 +1,19 @@
-import React, {FunctionComponent} from 'react';
-import Link from 'next/link';
+import React from 'react';
 import {css} from '@emotion/core';
 
-const wrapper = css`
-  padding: 25px;
+import Header from './Header';
+
+const mainContent = css`
   text-align: center;
+  padding: 25px;
 `;
 
-const Layout: FunctionComponent<{}> = (props) => {
+const Layout = ({children}) => {
   return (
-    <div css={wrapper}>
-      <header>
-        <Link href="/profile">
-          <a>Profile</a>
-        </Link>
-      </header>
-      {props.children}
-    </div>
+    <>
+      <Header />
+      <div css={mainContent}>{children}</div>
+    </>
   );
 };
 

@@ -1,23 +1,30 @@
-import React, {FunctionComponent, useEffect, useState, useContext} from 'react';
+import React, {FunctionComponent} from 'react';
+import {GetServerSideProps} from 'next';
+import {useRouter} from 'next/router';
+import {useSession} from 'next-auth/client';
 import {useQuery} from 'react-query';
 
-import {AuthContext} from './_app';
-import withAuth from '../components/withAuth';
 import Layout from '../components/Layout';
 import SongCard from '../components/SongCard';
 import {Song} from '../models';
 
-const Profile: FunctionComponent<{}> = () => {
-  const {user, token} = useContext(AuthContext);
+type Session = {user: {name: string}} | null;
 
+interface Props {
+  session: Session;
+}
+
+const Profile: FunctionComponent<Props> = () => {
+  const [session, loadingSession] = useSession();
+  console.log('profile', session, loadingSession);
+  const router = useRouter();
   const {status, data: songs} = useQuery<Song[]>(
     'songs',
     () => {
-      return fetch('http://localhost:3030/api/songs', {
+      return fetch('/api/songs', {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
         },
       })
         .then((res) => {
@@ -26,31 +33,59 @@ const Profile: FunctionComponent<{}> = () => {
           }
           return res.json();
         })
-        .then((res) => res.data.songs);
+        .then((data) => data.songs);
     },
     {retry: false}
   );
 
-  console.log(status);
-
-  if (status === 'error') {
-    return <Layout>An error occurred loading your songs.</Layout>;
+  if (!loadingSession && !session) {
+    console.log('here');
+    router.push('/');
+    return null;
   }
 
-  if (status === 'loading') {
-    return <Layout>Loading songs...</Layout>;
+  if (loadingSession) {
+    return null;
   }
 
-  return (
-    <Layout>
-      <h1>{user.username}</h1>
-      <div>
-        {songs.map((song) => (
-          <SongCard key={song.id} song={song} />
-        ))}
-      </div>
-    </Layout>
-  );
+  const renderSongs = () => {
+    const {user} = session;
+    console.log(songs);
+
+    return (
+      <>
+        <h1>{user.name}</h1>
+        <div>{songs ? songs.map((song) => <SongCard key={song.id} song={song} />) : null}</div>
+      </>
+    );
+  };
+
+  const renderLoading = () => <div>Loading songs...</div>;
+
+  const renderContent = () => {
+    if (status === 'loading') {
+      return renderLoading();
+    } else {
+      return renderSongs();
+    }
+  };
+
+  return <Layout>{renderContent()}</Layout>;
 };
 
-export default withAuth(Profile);
+// export const getServerSideProps: GetServerSideProps = async (ctx) => {
+//   const session = await getSession(ctx);
+//   console.log('PROFILE SESSION:', session);
+
+//   if (!session) {
+//     console.log('NO SESSION. REDIRECTING');
+//     ctx.res.writeHead(302, {
+//       Location: '/',
+//     });
+//     ctx.res.end();
+//   }
+
+//   return {props: {session}};
+// };
+
+export default Profile;

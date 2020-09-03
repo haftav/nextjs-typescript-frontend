@@ -28,16 +28,16 @@ const SongCard: FunctionComponent<Props> = ({song}) => {
   return (
     <Box maxW="3xl" my={5} mx="auto" borderWidth="1px" rounded="lg">
       <Box mb={5} p="15px 15px 0px 15px">
-        <Heading as="h2" size="lg" textAlign="left">
+        <Heading as="h2" size="md" textAlign="left">
           {song.songName}
         </Heading>
-        <Text fontSize="lg" textAlign="left">
+        <Text fontSize="md" textAlign="left">
           {song.artist}
         </Text>
         <SkillLevel mt="15px" rating={song.skill.value} />
       </Box>
       <Divider m="25px auto 0px auto" />
-      <PseudoBox as="button" w="100%" h={50} _hover={{cursor: 'pointer'}} onClick={handleClick}>
+      <PseudoBox as="button" w="100%" h="40px" _hover={{cursor: 'pointer'}} onClick={handleClick}>
         <Icon
           name="chevron-down"
           size="40px"
