@@ -1,37 +1,19 @@
-import React, {FunctionComponent} from 'react';
-import Link from 'next/link';
-import {Button} from '@chakra-ui/core';
+import React from 'react';
 import {css} from '@emotion/core';
-import {signOut} from 'next-auth/client';
 
 import Header from './Header';
 
-const wrapper = css`
-  padding: 25px;
+const mainContent = css`
   text-align: center;
+  padding: 25px;
 `;
 
-interface Props {
-  session?: {};
-}
-
-const Layout: FunctionComponent<Props> = (props) => {
+const Layout = ({children}) => {
   return (
-    <div css={wrapper}>
+    <>
       <Header />
-      <header>
-        {props.session ? (
-          <Link href="/profile">
-            <a>Profile</a>
-          </Link>
-        ) : (
-          ''
-        )}
-
-        {props.session ? <Button onClick={signOut}>Log Out</Button> : null}
-      </header>
-      {props.children}
-    </div>
+      <div css={mainContent}>{children}</div>
+    </>
   );
 };
 

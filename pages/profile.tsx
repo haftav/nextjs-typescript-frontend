@@ -16,7 +16,7 @@ interface Props {
 
 const Profile: FunctionComponent<Props> = () => {
   const [session, loadingSession] = useSession();
-  console.log(session, loadingSession);
+  console.log('profile', session, loadingSession);
   const router = useRouter();
   const {status, data: songs} = useQuery<Song[]>(
     'songs',
