@@ -19,10 +19,8 @@ const LandingPage: FunctionComponent<Props> = ({session}) => {
       password: e.currentTarget.password.value,
     };
 
-    signIn('credentials', body);
+    signIn('credentials', {...body, callbackUrl: 'http://localhost:3000/profile'});
   };
-
-  console.log('SESSION:', session);
 
   return (
     <Layout session={session}>
@@ -48,7 +46,6 @@ const LandingPage: FunctionComponent<Props> = ({session}) => {
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const session = await getSession(ctx);
-  console.log('session', session);
 
   return {props: {session}};
 };

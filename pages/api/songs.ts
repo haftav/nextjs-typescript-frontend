@@ -3,7 +3,7 @@ import jwt from 'next-auth/jwt';
 
 const secret = process.env.JWT_SECRET;
 
-const fetchSongs: NextApiHandler = async (req, res) => {
+const songHandler: NextApiHandler = async (req, res) => {
   const token = await jwt.getToken({req, secret, raw: true});
   return fetch('http://localhost:3030/api/songs', {
     method: 'GET',
@@ -14,7 +14,7 @@ const fetchSongs: NextApiHandler = async (req, res) => {
   })
     .then((result) => {
       if (!result.ok) {
-        return res.status(result.status).json({});
+        throw new Error();
       }
       return result.json();
     })
@@ -26,4 +26,4 @@ const fetchSongs: NextApiHandler = async (req, res) => {
     });
 };
 
-export default fetchSongs;
+export default songHandler;

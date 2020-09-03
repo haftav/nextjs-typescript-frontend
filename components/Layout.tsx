@@ -17,9 +17,14 @@ const Layout: FunctionComponent<Props> = (props) => {
   return (
     <div css={wrapper}>
       <header>
-        <Link href="/profile">
-          <a>Profile</a>
-        </Link>
+        {props.session ? (
+          <Link href="/profile">
+            <a>Profile</a>
+          </Link>
+        ) : (
+          ''
+        )}
+
         {props.session ? <Button onClick={signOut}>Log Out</Button> : null}
       </header>
       {props.children}

@@ -44,7 +44,7 @@ const Profile: FunctionComponent<Props> = ({session}) => {
   };
 
   return (
-    <Layout>
+    <Layout session={session}>
       <h1>{user.name}</h1>
       {renderStatus()}
       <div>{songs ? songs.map((song) => <SongCard key={song.id} song={song} />) : null}</div>
@@ -54,9 +54,11 @@ const Profile: FunctionComponent<Props> = ({session}) => {
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const session = await getSession(ctx);
+  console.log('PROFILE SESSION:', session);
 
   if (!session) {
-    ctx.res.writeHead(301, {
+    console.log('NO SESSION. REDIRECTING');
+    ctx.res.writeHead(302, {
       Location: '/',
     });
     ctx.res.end();

@@ -13,7 +13,7 @@ const options = {
       // You can specify whatever fields you are expecting to be submitted.
       // e.g. domain, username, password, 2FA token, etc.
       credentials: {
-        username: {label: 'Username', type: 'text', placeholder: 'jsmith'},
+        username: {label: 'Username', type: 'text'},
         password: {label: 'Password', type: 'password'},
       },
       authorize: async (credentials) => {
@@ -49,8 +49,8 @@ const options = {
   session: {
     jwt: true,
     // TODO -> update with realistic values
-    maxAge: 30,
-    updateAge: 15,
+    maxAge: 15 * 60,
+    updateAge: 30,
   },
   jwt: {
     secret: process.env.SECRET,
@@ -71,7 +71,12 @@ const options = {
       }
       return Promise.resolve(token);
     },
+    // redirect: async (url, baseUrl) => {
+    //   console.log('redirecting');
+    //   return Promise.resolve('http://localhost:3000/profile');
+    // },
   },
+  debug: true,
 };
 
 export default (req, res) => NextAuth(req, res, options);
