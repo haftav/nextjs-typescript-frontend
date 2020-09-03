@@ -1,6 +1,7 @@
 import React, {FunctionComponent} from 'react';
 import {GetServerSideProps} from 'next';
-import {getSession} from 'next-auth/client';
+import {useRouter} from 'next/router';
+import {useSession} from 'next-auth/client';
 import {useQuery} from 'react-query';
 
 import Layout from '../components/Layout';
@@ -13,8 +14,10 @@ interface Props {
   session: Session;
 }
 
-const Profile: FunctionComponent<Props> = ({session}) => {
-  const {user} = session;
+const Profile: FunctionComponent<Props> = () => {
+  const [session, loadingSession] = useSession();
+  console.log(session, loadingSession);
+  const router = useRouter();
   const {status, data: songs} = useQuery<Song[]>(
     'songs',
     () => {
@@ -35,36 +38,54 @@ const Profile: FunctionComponent<Props> = ({session}) => {
     {retry: false}
   );
 
-  console.log(status);
+  if (!loadingSession && !session) {
+    console.log('here');
+    router.push('/');
+    return null;
+  }
 
-  const renderStatus = () => {
+  if (loadingSession) {
+    return null;
+  }
+
+  const renderSongs = () => {
+    const {user} = session;
+    console.log(songs);
+
+    return (
+      <>
+        <h1>{user.name}</h1>
+        <div>{songs ? songs.map((song) => <SongCard key={song.id} song={song} />) : null}</div>
+      </>
+    );
+  };
+
+  const renderLoading = () => <div>Loading songs...</div>;
+
+  const renderContent = () => {
     if (status === 'loading') {
-      return <div>Loading songs...</div>;
+      return renderLoading();
+    } else {
+      return renderSongs();
     }
   };
 
-  return (
-    <Layout session={session}>
-      <h1>{user.name}</h1>
-      {renderStatus()}
-      <div>{songs ? songs.map((song) => <SongCard key={song.id} song={song} />) : null}</div>
-    </Layout>
-  );
+  return <Layout>{renderContent()}</Layout>;
 };
 
-export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  const session = await getSession(ctx);
-  console.log('PROFILE SESSION:', session);
+// export const getServerSideProps: GetServerSideProps = async (ctx) => {
+//   const session = await getSession(ctx);
+//   console.log('PROFILE SESSION:', session);
 
-  if (!session) {
-    console.log('NO SESSION. REDIRECTING');
-    ctx.res.writeHead(302, {
-      Location: '/',
-    });
-    ctx.res.end();
-  }
+//   if (!session) {
+//     console.log('NO SESSION. REDIRECTING');
+//     ctx.res.writeHead(302, {
+//       Location: '/',
+//     });
+//     ctx.res.end();
+//   }
 
-  return {props: {session}};
-};
+//   return {props: {session}};
+// };
 
 export default Profile;

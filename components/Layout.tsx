@@ -4,6 +4,8 @@ import {Button} from '@chakra-ui/core';
 import {css} from '@emotion/core';
 import {signOut} from 'next-auth/client';
 
+import Header from './Header';
+
 const wrapper = css`
   padding: 25px;
   text-align: center;
@@ -16,6 +18,7 @@ interface Props {
 const Layout: FunctionComponent<Props> = (props) => {
   return (
     <div css={wrapper}>
+      <Header />
       <header>
         {props.session ? (
           <Link href="/profile">
