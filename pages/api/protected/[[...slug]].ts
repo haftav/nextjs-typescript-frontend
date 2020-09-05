@@ -1,37 +1,9 @@
-import {NextApiHandler, NextApiRequest} from 'next';
+import {NextApiHandler} from 'next';
 import jwt from 'next-auth/jwt';
 import {makeExternalRequest} from 'utils/http';
+import {buildSlug, buildQuery} from 'utils';
 
 const secret = process.env.JWT_SECRET;
-
-type SlugQuery = string | string[] | undefined;
-
-const buildSlug = (slug: SlugQuery): string => {
-  if (!slug) {
-    return '';
-  }
-  if (typeof slug === 'string') {
-    return '';
-  }
-  return slug.join('/');
-};
-
-const buildQuery = (queryObject: NextApiRequest['query']): string => {
-  let output = '?';
-  const pairs = [];
-  for (const key in queryObject) {
-    if (key === 'slug') {
-      continue;
-    }
-    const value = queryObject[key];
-    const keyValuePair = `${key}=${value}`;
-    pairs.push(keyValuePair);
-  }
-  if (pairs.length === 0) {
-    return '';
-  }
-  return (output += pairs.join('&'));
-};
 
 const apiHandler: NextApiHandler = async (req, res) => {
   const token = await jwt.getToken({req, secret, raw: true});
@@ -45,7 +17,6 @@ const apiHandler: NextApiHandler = async (req, res) => {
 
   if (req.method === 'GET') {
     // forward request to api, receive data, and perform error handling
-    console.log('ENDPOINT', endpoint);
     const token = await jwt.getToken({req, secret, raw: true});
     // // TODO -> convert to API_ENDPOINT variable
     return makeExternalRequest('GET', `http://localhost:3030/api/${endpoint}`, {
