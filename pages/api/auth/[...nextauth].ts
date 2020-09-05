@@ -49,8 +49,8 @@ const options = {
   session: {
     jwt: true,
     // TODO -> update with realistic values
-    maxAge: 15 * 60,
-    updateAge: 30,
+    maxAge: 14 * 60 * 60,
+    updateAge: 2 * 60,
   },
   jwt: {
     secret: process.env.SECRET,
@@ -71,10 +71,6 @@ const options = {
       }
       return Promise.resolve(token);
     },
-    // redirect: async (url, baseUrl) => {
-    //   console.log('redirecting');
-    //   return Promise.resolve('http://localhost:3000/profile');
-    // },
   },
   debug: true,
 };

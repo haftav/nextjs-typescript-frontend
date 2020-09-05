@@ -1,4 +1,4 @@
-import {ThemeProvider, CSSReset} from '@chakra-ui/core';
+import {ThemeProvider, ColorModeProvider, CSSReset} from '@chakra-ui/core';
 import {ReactQueryDevtools} from 'react-query-devtools';
 import {ReactQueryConfigProvider} from 'react-query';
 import {Provider} from 'next-auth/client';
@@ -13,8 +13,10 @@ function MyApp({Component, pageProps}: AppProps) {
     <Provider session={pageProps.session}>
       <ReactQueryConfigProvider config={queryConfig}>
         <ThemeProvider>
-          <CSSReset />
-          <Component {...pageProps} />
+          <ColorModeProvider value="dark">
+            <CSSReset />
+            <Component {...pageProps} />
+          </ColorModeProvider>
         </ThemeProvider>
         <ReactQueryDevtools initialIsOpen={false} />
       </ReactQueryConfigProvider>

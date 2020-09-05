@@ -1,5 +1,5 @@
 import React, {FunctionComponent} from 'react';
-import {Button, Box, Input, FormControl, FormLabel, FormErrorMessage} from '@chakra-ui/core';
+import {Button, Box, Input, FormControl, FormLabel, Heading} from '@chakra-ui/core';
 import {useMutation} from 'react-query';
 import {signIn} from 'next-auth/client';
 import Layout from '../components/Layout';
@@ -42,6 +42,7 @@ const Register: FunctionComponent<{}> = (props) => {
   return (
     <Layout>
       <Box maxW="sm" m="auto">
+      <Heading as="h2">Register</Heading>
         <form onSubmit={handleSubmit}>
           <FormControl m="25px auto" textAlign="left">
             <FormLabel htmlFor="username">Username</FormLabel>

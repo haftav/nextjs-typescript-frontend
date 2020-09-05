@@ -1,23 +1,13 @@
 import React, {FunctionComponent} from 'react';
-import {GetServerSideProps} from 'next';
-import {useRouter} from 'next/router';
 import {useSession} from 'next-auth/client';
 import {useQuery} from 'react-query';
 
-import Layout from '../components/Layout';
 import SongCard from '../components/SongCard';
 import {Song} from '../models';
+import withAuthLayout from 'components/AuthenticatedLayout';
 
-type Session = {user: {name: string}} | null;
-
-interface Props {
-  session: Session;
-}
-
-const Profile: FunctionComponent<Props> = () => {
-  const [session, loadingSession] = useSession();
-  console.log('profile', session, loadingSession);
-  const router = useRouter();
+const Profile: FunctionComponent<{}> = () => {
+  const [session] = useSession();
   const {status, data: songs} = useQuery<Song[]>(
     'songs',
     () => {
@@ -38,19 +28,8 @@ const Profile: FunctionComponent<Props> = () => {
     {retry: false}
   );
 
-  if (!loadingSession && !session) {
-    console.log('here');
-    router.push('/');
-    return null;
-  }
-
-  if (loadingSession) {
-    return null;
-  }
-
   const renderSongs = () => {
     const {user} = session;
-    console.log(songs);
 
     return (
       <>
@@ -70,22 +49,7 @@ const Profile: FunctionComponent<Props> = () => {
     }
   };
 
-  return <Layout>{renderContent()}</Layout>;
+  return renderContent();
 };
 
-// export const getServerSideProps: GetServerSideProps = async (ctx) => {
-//   const session = await getSession(ctx);
-//   console.log('PROFILE SESSION:', session);
-
-//   if (!session) {
-//     console.log('NO SESSION. REDIRECTING');
-//     ctx.res.writeHead(302, {
-//       Location: '/',
-//     });
-//     ctx.res.end();
-//   }
-
-//   return {props: {session}};
-// };
-
-export default Profile;
+export default withAuthLayout(Profile);

@@ -97,10 +97,24 @@ const Header = () => {
         </Link>
       </Box>
       <ProfileLink session={session} loading={loading} />
-      <Flex position="absolute" right="25px">
+      <Flex position="absolute" right="25px" align="center">
         <LoginLink session={session} loading={loading} />
         <RegisterLink session={session} loading={loading} />
         <LogoutLink session={session} loading={loading} />
+        <Flex
+          fontSize="8px"
+          flexDir="column"
+          align="center"
+          justify="center"
+          border="1px solid rgba(255,255,255,0.16)"
+          borderRadius="0.25rem"
+          padding="5px"
+          height="50px"
+        >
+          <Box>|</Box>
+          <Box>-</Box>
+          <Box>O</Box>
+        </Flex>
       </Flex>
     </Flex>
   );
