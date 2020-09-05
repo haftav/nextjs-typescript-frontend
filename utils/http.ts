@@ -1,35 +1,43 @@
 type MethodOption = 'GET' | 'POST' | 'PUT' | 'DELETE';
-type Callback<T> = (data) => T;
 interface Options {
   isExternal?: boolean;
 }
 
-export function makeRequest<T>(
+export function makeRequest(
   method: MethodOption,
   endpoint: string,
-  callback: Callback<T>,
   fetchOptions: RequestInit = {},
   options: Options = {}
 ) {
-  const fetchConfig: RequestInit = {...fetchOptions};
+  const fetchConfig: RequestInit = {...fetchOptions, method};
   const requestEndpoint = options.isExternal ? endpoint : '/api' + endpoint;
 
-  return fetch(requestEndpoint, fetchConfig)
-    .then((res) => {
-      if (!res.ok) {
-        throw new Error();
-      }
-      return res.json();
-    })
-    .then((data) => callback(data));
+  return fetch(requestEndpoint, fetchConfig).then((res) => {
+    if (!res.ok) {
+      throw new Error();
+    }
+    return res.json();
+  });
 }
 
-export function makeProtectedRequest<T>(
+export function makeProtectedRequest(
   method: MethodOption,
   endpoint: string,
-  callback: Callback<T>,
-  fetchOptions: RequestInit = {}
+  fetchOptions: RequestInit = {},
+  options: Options = {}
 ) {
   const protectedEndpoint = '/protected' + endpoint;
-  return makeRequest<T>(method, protectedEndpoint, callback, fetchOptions);
+  return makeRequest(method, protectedEndpoint, fetchOptions, options);
+}
+
+export function makeExternalRequest(
+  method: MethodOption,
+  endpoint: string,
+  fetchOptions: RequestInit = {},
+  options: Options = {}
+) {
+  return makeRequest(method, endpoint, fetchOptions, {
+    isExternal: true,
+    ...options,
+  });
 }

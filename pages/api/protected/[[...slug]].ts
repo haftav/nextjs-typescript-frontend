@@ -1,6 +1,6 @@
 import {NextApiHandler, NextApiRequest} from 'next';
 import jwt from 'next-auth/jwt';
-import {makeRequest} from 'utils/http';
+import {makeExternalRequest} from 'utils/http';
 
 const secret = process.env.JWT_SECRET;
 
@@ -38,30 +38,28 @@ const apiHandler: NextApiHandler = async (req, res) => {
   if (!token) {
     return res.status(401).send({});
   }
+
+  const slug = buildSlug(req.query.slug);
+  const query = buildQuery(req.query);
+  const endpoint = slug + query;
+
   if (req.method === 'GET') {
     // forward request to api, receive data, and perform error handling
-    const slug = buildSlug(req.query.slug);
-    const query = buildQuery(req.query);
-    const endpoint = slug + query;
     console.log('ENDPOINT', endpoint);
     const token = await jwt.getToken({req, secret, raw: true});
     // // TODO -> convert to API_ENDPOINT variable
-    return makeRequest<void>(
-      'GET',
-      `http://localhost:3030/api/${endpoint}`,
-      (result) => {
+    return makeExternalRequest('GET', `http://localhost:3030/api/${endpoint}`, {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((result) => {
         return res.status(200).send(result.data);
-      },
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-      },
-      {isExternal: true}
-    ).catch((err) => {
-      return res.status(500).json({err});
-    });
+      })
+      .catch((err) => {
+        return res.status(500).json({err});
+      });
   }
   if (req.method === 'POST') {
     // postHandler

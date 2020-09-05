@@ -1,7 +1,5 @@
 import {NextApiHandler, NextApiRequest} from 'next';
-import jwt from 'next-auth/jwt';
-
-const secret = process.env.JWT_SECRET;
+import {makeExternalRequest} from 'utils/http';
 
 type SlugQuery = string | string[] | undefined;
 
@@ -33,40 +31,42 @@ const buildQuery = (queryObject: NextApiRequest['query']): string => {
 };
 
 const apiHandler: NextApiHandler = async (req, res) => {
+  const slug = buildSlug(req.query.slug);
+  const query = buildQuery(req.query);
+  const endpoint = slug + query;
+  console.log('ENDPOINT', endpoint);
+
   if (req.method === 'GET') {
-    // forward request to api, receive data, and perform error handling
-    const slug = buildSlug(req.query.slug);
-    const query = buildQuery(req.query);
-    const endpoint = slug + query;
-    console.log('ENDPOINT', endpoint);
-    const token = await jwt.getToken({req, secret, raw: true});
     // // TODO -> convert to API_ENDPOINT variable
-    return fetch(`http://localhost:3030/api/${endpoint}`, {
-      method: 'GET',
+    return makeExternalRequest('GET', `http://localhost:3030/api/${endpoint}`, {
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
       },
     })
       .then((result) => {
-        if (!result.ok) {
-          throw new Error();
-        }
-        return result.json();
-      })
-      .then((result) => {
         return res.status(200).send(result.data);
       })
-      .catch((error) => {
-        return res.status(500).json({error});
+      .catch((err) => {
+        return res.status(500).json({err});
       });
   }
   if (req.method === 'POST') {
-    // postHandler
-    // get endpoint
-    // get body
-    // get query string
-    // forward request to api, receive data, and perform error handling
+    return makeExternalRequest(
+      'POST',
+      `http://localhost:3030/api/${endpoint}`,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(req.body),
+      }
+    )
+      .then((result) => {
+        return res.status(200).send(result.data);
+      })
+      .catch((err) => {
+        return res.status(500).json({err});
+      });
   }
   if (req.method === 'PUT') {
     // putHandler

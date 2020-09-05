@@ -13,16 +13,11 @@ const Profile: FunctionComponent<{}> = () => {
   const {status, data: songs} = useQuery<Song[]>(
     'songs',
     () => {
-      return makeProtectedRequest<Song[]>(
-        'GET',
-        '/songs',
-        (data) => data.songs,
-        {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        }
-      );
+      return makeProtectedRequest('GET', '/songs', {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }).then((data) => data.songs);
     },
     {retry: false}
   );

@@ -1,28 +1,30 @@
 import React, {FunctionComponent} from 'react';
-import {Button, Box, Input, FormControl, FormLabel, Heading} from '@chakra-ui/core';
+import {
+  Button,
+  Box,
+  Input,
+  FormControl,
+  FormLabel,
+  Heading,
+} from '@chakra-ui/core';
 import {useMutation} from 'react-query';
 import {signIn} from 'next-auth/client';
 import Layout from '../components/Layout';
+import {makeRequest} from 'utils/http';
 
 const createUser = ({userData}) => {
-  return fetch('/api/register', {
-    method: 'POST',
+  return makeRequest('POST', '/user/signup', {
     headers: {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify(userData),
-  })
-    .then((res) => {
-      if (!res.ok) {
-        throw new Error();
-      }
-      return res.json();
-    })
-    .then((data) => data);
+  }).then((data) => data);
 };
 
-const Register: FunctionComponent<{}> = (props) => {
-  const [mutate, {status, data, error}] = useMutation(createUser, {throwOnError: true});
+const Register: FunctionComponent<{}> = () => {
+  const [mutate, {status, data, error}] = useMutation(createUser, {
+    throwOnError: true,
+  });
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -33,7 +35,10 @@ const Register: FunctionComponent<{}> = (props) => {
 
     try {
       await mutate({userData});
-      return signIn('credentials', {...userData, callbackUrl: 'http://localhost:3000/profile'});
+      return signIn('credentials', {
+        ...userData,
+        callbackUrl: 'http://localhost:3000/profile',
+      });
     } catch (err) {
       console.log('unable to sign in.');
       console.error(error);
@@ -42,7 +47,7 @@ const Register: FunctionComponent<{}> = (props) => {
   return (
     <Layout>
       <Box maxW="sm" m="auto">
-      <Heading as="h2">Register</Heading>
+        <Heading as="h2">Register</Heading>
         <form onSubmit={handleSubmit}>
           <FormControl m="25px auto" textAlign="left">
             <FormLabel htmlFor="username">Username</FormLabel>
