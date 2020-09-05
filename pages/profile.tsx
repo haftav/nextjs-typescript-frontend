@@ -2,28 +2,27 @@ import React, {FunctionComponent} from 'react';
 import {useSession} from 'next-auth/client';
 import {useQuery} from 'react-query';
 
-import SongCard from '../components/SongCard';
-import {Song} from '../models';
+import SongCard from 'components/SongCard';
 import withAuthLayout from 'components/AuthenticatedLayout';
+
+import {Song} from 'models';
+import {makeProtectedRequest} from 'utils/http';
 
 const Profile: FunctionComponent<{}> = () => {
   const [session] = useSession();
   const {status, data: songs} = useQuery<Song[]>(
     'songs',
     () => {
-      return fetch('/api/songs', {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
-        .then((res) => {
-          if (!res.ok) {
-            throw new Error();
-          }
-          return res.json();
-        })
-        .then((data) => data.songs);
+      return makeProtectedRequest<Song[]>(
+        'GET',
+        '/songs',
+        (data) => data.songs,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      );
     },
     {retry: false}
   );
@@ -34,7 +33,11 @@ const Profile: FunctionComponent<{}> = () => {
     return (
       <>
         <h1>{user.name}</h1>
-        <div>{songs ? songs.map((song) => <SongCard key={song.id} song={song} />) : null}</div>
+        <div>
+          {songs
+            ? songs.map((song) => <SongCard key={song.id} song={song} />)
+            : null}
+        </div>
       </>
     );
   };
