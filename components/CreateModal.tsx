@@ -13,6 +13,7 @@ import {
   Input,
   Button,
   Text,
+  useToast,
 } from '@chakra-ui/core';
 import {useMutation, queryCache} from 'react-query';
 import {makeProtectedRequest} from 'utils/http';
@@ -36,13 +37,26 @@ const ContentContainer: React.FunctionComponent<ContentContainerProps> = ({
   closeModal,
 }) => {
   const [skillLevel, setSkillLevel] = useState<number>(1);
-  const [mutate, {status, data, error}] = useMutation(createSong, {
-    throwOnError: true,
+  const toast = useToast();
+  const [mutate, {status}] = useMutation(createSong, {
     onSuccess: () => {
-      // need to update cache here
       queryCache.invalidateQueries('songs');
-      console.log('great success!');
+      toast({
+        title: 'Song created!',
+        status: 'success',
+        duration: 6000,
+        isClosable: true,
+      });
       closeModal();
+    },
+    onError: () => {
+      toast({
+        title: 'An error occurred.',
+        description: 'Unable to create new song.',
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+      });
     },
   });
 
@@ -56,12 +70,7 @@ const ContentContainer: React.FunctionComponent<ContentContainerProps> = ({
       skillLevel,
     };
 
-    try {
-      await mutate({songData});
-    } catch (err) {
-      console.log('unable to create song.');
-      console.error(error);
-    }
+    await mutate({songData});
   };
 
   const skillLevelSetter = (level) => () => setSkillLevel(level);
@@ -128,7 +137,14 @@ const ContentContainer: React.FunctionComponent<ContentContainerProps> = ({
             </Flex>
           </Box>
           <Flex justify="flex-end">
-            <Button variantColor="blue" size="md" textAlign="center" mr="10px" type="submit">
+            <Button
+              isLoading={status === 'loading'}
+              variantColor="blue"
+              size="md"
+              textAlign="center"
+              mr="10px"
+              type="submit"
+            >
               Create
             </Button>
             <Button color="gray" size="md" textAlign="center" variant="ghost">
