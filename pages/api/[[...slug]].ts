@@ -23,16 +23,12 @@ const apiHandler: NextApiHandler = async (req, res) => {
       });
   }
   if (req.method === 'POST') {
-    return makeExternalRequest(
-      'POST',
-      `http://localhost:3030/api/${endpoint}`,
-      {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(req.body),
-      }
-    )
+    return makeExternalRequest('POST', `http://localhost:3030/api/${endpoint}`, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(req.body),
+    })
       .then((result) => {
         return res.status(200).send(result.data);
       })

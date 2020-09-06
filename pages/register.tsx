@@ -28,6 +28,8 @@ const Register: FunctionComponent<{}> = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // TODO -> sanitize inputs
+
     const userData = {
       username: e.currentTarget.username.value,
       password: e.currentTarget.password.value,
