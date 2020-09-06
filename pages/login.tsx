@@ -1,5 +1,5 @@
-import React, {FunctionComponent} from 'react';
-import {signIn, getSession} from 'next-auth/client';
+import React from 'react';
+import {signIn} from 'next-auth/client';
 import {FormControl, FormLabel, Input, Button, Box, Heading} from '@chakra-ui/core';
 
 import Layout from 'components/Layout';
@@ -8,12 +8,17 @@ const Login = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    // TODO -> sanitize inputs
+
     const body = {
       username: e.currentTarget.username.value,
       password: e.currentTarget.password.value,
     };
 
-    signIn('credentials', {...body, callbackUrl: 'http://localhost:3000/profile'});
+    signIn('credentials', {
+      ...body,
+      callbackUrl: 'http://localhost:3000/profile',
+    });
   };
 
   return (

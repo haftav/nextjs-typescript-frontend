@@ -28,11 +28,7 @@ const Profile: FunctionComponent<{}> = () => {
     return (
       <>
         <h1>{user.name}</h1>
-        <div>
-          {songs
-            ? songs.map((song) => <SongCard key={song.id} song={song} />)
-            : null}
-        </div>
+        <div>{songs ? songs.map((song) => <SongCard key={song.id} song={song} />) : null}</div>
       </>
     );
   };

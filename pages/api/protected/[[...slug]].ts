@@ -33,11 +33,19 @@ const apiHandler: NextApiHandler = async (req, res) => {
       });
   }
   if (req.method === 'POST') {
-    // postHandler
-    // get endpoint
-    // get body
-    // get query string
-    // forward request to api, receive data, and perform error handling
+    return makeExternalRequest('POST', `http://localhost:3030/api/${endpoint}`, {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(req.body),
+    })
+      .then((result) => {
+        return res.status(200).send(result.data);
+      })
+      .catch((err) => {
+        return res.status(500).json({err});
+      });
   }
   if (req.method === 'PUT') {
     // putHandler

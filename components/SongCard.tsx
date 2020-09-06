@@ -37,7 +37,13 @@ const SongCard: FunctionComponent<Props> = ({song}) => {
         <SkillLevel mt="15px" rating={song.skill.value} />
       </Box>
       <Divider m="25px auto 0px auto" />
-      <PseudoBox as="button" w="100%" h="40px" _hover={{cursor: 'pointer'}} onClick={handleClick}>
+      <PseudoBox
+        as="button"
+        w="100%"
+        h="40px"
+        _hover={{cursor: 'pointer'}}
+        onClick={handleClick}
+      >
         <Icon
           name="chevron-down"
           size="40px"
@@ -45,7 +51,13 @@ const SongCard: FunctionComponent<Props> = ({song}) => {
           transform={isOpen ? 'rotate(180deg)' : 'rotate(0deg)'}
         />
       </PseudoBox>
-      <Collapse as={Flex} isOpen={isOpen} pt="15px" pb="15px" justifyContent="space-around">
+      <Collapse
+        as={Flex}
+        isOpen={isOpen}
+        pt="15px"
+        pb="15px"
+        justifyContent="space-around"
+      >
         <Button w={150}>Beginner</Button>
         <Button w={150}>Intermediate</Button>
         <Button w={150}>Advanced</Button>
