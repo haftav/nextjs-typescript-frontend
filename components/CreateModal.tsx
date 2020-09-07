@@ -147,7 +147,7 @@ const ContentContainer: React.FunctionComponent<ContentContainerProps> = ({
             >
               Create
             </Button>
-            <Button color="gray" size="md" textAlign="center" variant="ghost">
+            <Button color="gray" size="md" textAlign="center" variant="ghost" onClick={closeModal}>
               Cancel
             </Button>
           </Flex>

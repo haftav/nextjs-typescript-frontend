@@ -4,6 +4,7 @@ import {
   Button,
   Box,
   Divider,
+  Badge,
   Heading,
   Flex,
   Icon,
@@ -15,7 +16,7 @@ import {useMutation, queryCache} from 'react-query';
 import {makeProtectedRequest} from 'utils/http';
 
 import SkillLevel from './SkillLevel';
-import {Song} from '../models';
+import {Song, SkillLevelTitles} from '../models';
 
 interface SongUpdaterParams {
   songName?: string;
@@ -62,7 +63,10 @@ const SongCard: FunctionComponent<Props> = ({song}) => {
         const songToUpdate = {...oldData[index]};
         if (songName) songToUpdate.songName = songName;
         if (artist) songToUpdate.artist = artist;
-        if (skillLevel) songToUpdate.skill.value = skillLevel;
+        if (skillLevel) {
+          songToUpdate.skill.value = skillLevel;
+          songToUpdate.skill.defaultTitle = SkillLevelTitles[skillLevel];
+        }
         return [...oldData.slice(0, index), songToUpdate, ...oldData.slice(index + 1)];
       });
 
@@ -98,26 +102,36 @@ const SongCard: FunctionComponent<Props> = ({song}) => {
   };
 
   return (
-    <Box maxW="3xl" my={5} mx="auto" borderWidth="1px" rounded="lg">
+    <PseudoBox
+      maxW="3xl"
+      my={5}
+      mx="auto"
+      position="relative"
+      borderWidth="1px"
+      rounded="lg"
+      onClick={handleClick}
+      _hover={{cursor: 'pointer'}}
+    >
       <Box mb={5} p="15px 15px 0px 15px">
-        <Heading as="h2" size="md" textAlign="left">
+        <Heading as="h2" fontSize={['md', 'lg']} textAlign="left" maxW="80%">
           {song.songName}
         </Heading>
-        <Text fontSize="md" textAlign="left">
+        <Text fontSize="md" textAlign="left" maxW="80%">
           {song.artist}
         </Text>
+        <Box position="absolute" top="15px" right="15px" w="auto" h="auto">
+          <Badge fontSize={['10px', '12px']}>{song.skill.defaultTitle}</Badge>
+        </Box>
         <SkillLevel mt="15px" rating={song.skill.value} />
       </Box>
-      <Divider m="25px auto 0px auto" />
-      <PseudoBox as="button" w="100%" h="40px" _hover={{cursor: 'pointer'}} onClick={handleClick}>
-        <Icon
-          name="chevron-down"
-          size="40px"
-          color="#b3b3b3"
-          transform={isOpen ? 'rotate(180deg)' : 'rotate(0deg)'}
-        />
-      </PseudoBox>
-      <Collapse as={Flex} isOpen={isOpen} pt="15px" pb="15px" justifyContent="space-around">
+      <Collapse
+        as={Flex}
+        isOpen={isOpen}
+        pt="15px"
+        pb="15px"
+        justifyContent="space-around"
+        onClick={(e) => e.stopPropagation()}
+      >
         <Button size="sm" w={150} onClick={handleButtonClick(1)}>
           Beginner
         </Button>
@@ -131,7 +145,7 @@ const SongCard: FunctionComponent<Props> = ({song}) => {
           Expert
         </Button>
       </Collapse>
-    </Box>
+    </PseudoBox>
   );
 };
 
