@@ -1,5 +1,6 @@
 import React, {FunctionComponent, useMemo} from 'react';
 import {v4 as uuidv4} from 'uuid';
+import {css} from '@emotion/core';
 
 export type GradientEntity = {
   start: string;
@@ -40,7 +41,16 @@ const Gradient: FunctionComponent<GradientProps> = ({rating}) => {
   const id: string = useMemo(() => uuidv4(), []);
   const gradient = gradients[rating];
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" version="1.1" style={{width: '100%', height: 10}}>
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      version="1.1"
+      style={{width: '100%', height: 10}}
+      css={css`
+        stop {
+          transition: stop-color 0.3s ease-out;
+        }
+      `}
+    >
       <defs>
         <linearGradient spreadMethod="pad" id={id} x1="0%" y1="0%" x2="100%" y2="0%">
           <stop

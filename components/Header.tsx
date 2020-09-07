@@ -1,16 +1,6 @@
 import React, {useState} from 'react';
 import Link from 'next/link';
-import {
-  Flex,
-  Box,
-  Button,
-  Text,
-  useColorMode,
-  Menu,
-  MenuButton,
-  MenuList,
-  MenuItem,
-} from '@chakra-ui/core';
+import {Flex, Box, Button, Text, Menu, MenuButton, MenuList, MenuItem} from '@chakra-ui/core';
 import {useSession} from 'next-auth/client';
 import {signOut} from 'next-auth/client';
 
@@ -58,16 +48,11 @@ const LogoutLink = () => (
   </Button>
 );
 
-const hoverColor = {light: 'gray.50', dark: 'gray.600'};
-
-interface PopoverProps {
+interface CreateMenuProps {
   toggleModal: () => void;
 }
 
-const CreatePopover: React.FunctionComponent<PopoverProps> = ({
-  toggleModal,
-}) => {
-  const {colorMode} = useColorMode();
+const CreateMenu: React.FunctionComponent<CreateMenuProps> = ({toggleModal}) => {
   return (
     <Box marginLeft="25px">
       <Menu>
@@ -116,7 +101,7 @@ const Header: React.FunctionComponent<{}> = () => {
               <ProfileLink />
             </Session.LoggedIn>
             <Session.LoggedIn>
-              <CreatePopover toggleModal={toggleModal} />
+              <CreateMenu toggleModal={toggleModal} />
             </Session.LoggedIn>
           </Flex>
         </Box>

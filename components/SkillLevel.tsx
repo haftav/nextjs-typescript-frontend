@@ -19,6 +19,7 @@ const SkillLevel: FunctionComponent<Props> = ({rating, ...rest}) => {
         width: ${rating * 25}%;
         border-radius: 10px;
         overflow: hidden;
+        transition: width 0.2s ease-out;
       `}
       {...rest}
     >
