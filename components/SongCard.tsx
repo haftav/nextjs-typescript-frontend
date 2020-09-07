@@ -15,25 +15,29 @@ import {useMutation, queryCache} from 'react-query';
 import {makeProtectedRequest} from 'utils/http';
 
 import SkillLevel from './SkillLevel';
-import {Song, SkillLevel as SkillLevelInterface} from '../models';
+import {Song} from '../models';
 
 interface SongUpdaterParams {
-  songData: {
-    id: number;
-    songName?: string;
-    artist?: string;
-    userId?: number;
-    skill?: SkillLevelInterface;
-  };
+  songName?: string;
+  artist?: string;
+  skillLevel?: number;
+  id: number;
 }
+
 const updateSong = (params: SongUpdaterParams) => {
-  const {songData} = params;
-  return makeProtectedRequest('PUT', `/songs/${songData.id}`, {
+  const {songName, artist, skillLevel, id} = params;
+  const requestBody: SongUpdaterParams = {id};
+
+  if (songName) requestBody.songName = songName;
+  if (artist) requestBody.artist = artist;
+  if (skillLevel) requestBody.skillLevel = skillLevel;
+
+  return makeProtectedRequest('PUT', `/songs/${id}`, {
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify(songData),
-  }).then((data) => data);
+    body: JSON.stringify(requestBody),
+  }).then((data) => data.song);
 };
 
 interface Props {
@@ -41,14 +45,31 @@ interface Props {
 }
 
 const SongCard: FunctionComponent<Props> = ({song}) => {
-  console.log(song.skill);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const toast = useToast();
+
   const [mutate] = useMutation(updateSong, {
-    onSuccess: () => {
-      queryCache.invalidateQueries('songs');
+    onMutate: (params) => {
+      // optimistically update songs
+      queryCache.cancelQueries('songs');
+
+      const previousSongs: Song[] = queryCache.getQueryData('songs');
+
+      queryCache.setQueryData('songs', (oldData: Song[]) => {
+        const {songName, artist, skillLevel, id} = params;
+        const index = oldData.findIndex((el) => el.id === id);
+        if (index < 0) return oldData;
+        const songToUpdate = {...oldData[index]};
+        if (songName) songToUpdate.songName = songName;
+        if (artist) songToUpdate.artist = artist;
+        if (skillLevel) songToUpdate.skill.value = skillLevel;
+        return [...oldData.slice(0, index), songToUpdate, ...oldData.slice(index + 1)];
+      });
+
+      // rollback function if update isn't successful
+      return () => queryCache.setQueryData('songs', previousSongs);
     },
-    onError: () => {
+    onError: (err, newTodo, rollback: () => void) => {
       toast({
         title: 'An error occurred.',
         description: 'Unable to update skill level.',
@@ -56,6 +77,10 @@ const SongCard: FunctionComponent<Props> = ({song}) => {
         duration: 5000,
         isClosable: true,
       });
+      return rollback();
+    },
+    onSettled: () => {
+      queryCache.invalidateQueries('songs');
     },
   });
 
@@ -68,7 +93,8 @@ const SongCard: FunctionComponent<Props> = ({song}) => {
       id: song.id,
       skillLevel,
     };
-    mutate({songData});
+
+    mutate(songData);
   };
 
   return (
