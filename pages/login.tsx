@@ -1,11 +1,23 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {signIn} from 'next-auth/client';
 import {FormControl, FormLabel, Input, Button, Box, Heading} from '@chakra-ui/core';
+import {string, object, number} from 'yup';
 
 import Layout from 'components/Layout';
 
+const formSchema = object().shape({
+  username: number().required().max(15),
+  password: number().required().max(60),
+});
+
+interface FormErrors {
+  username?: boolean;
+  password?: boolean;
+}
+
 const Login = () => {
-  const handleSubmit = (e) => {
+  const [errors, setErrors] = useState({});
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     // TODO -> sanitize inputs
@@ -15,7 +27,13 @@ const Login = () => {
       password: e.currentTarget.password.value,
     };
 
-    signIn('credentials', {
+    // try {
+    //   const valid = await formSchema.validate(body, {strict: true});
+    // } catch (err) {
+    //   console.error(err);
+    // }
+
+    return signIn('credentials', {
       ...body,
       callbackUrl: 'http://localhost:3000/profile',
     });

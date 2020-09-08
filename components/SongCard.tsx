@@ -130,18 +130,20 @@ const SongCard: FunctionComponent<Props> = ({song}) => {
         pt="15px"
         pb="15px"
         justifyContent="space-around"
+        flexDir={['row']}
+        flexWrap="wrap"
         onClick={(e) => e.stopPropagation()}
       >
-        <Button size="sm" w={150} onClick={handleButtonClick(1)}>
+        <Button size="sm" w={150} m={['10px auto', '0px']} onClick={handleButtonClick(1)}>
           Beginner
         </Button>
-        <Button size="sm" w={150} onClick={handleButtonClick(2)}>
+        <Button size="sm" w={150} m={['10px auto', '0px']} onClick={handleButtonClick(2)}>
           Intermediate
         </Button>
-        <Button size="sm" w={150} onClick={handleButtonClick(3)}>
+        <Button size="sm" w={150} m={['10px auto', '0px']} onClick={handleButtonClick(3)}>
           Advanced
         </Button>
-        <Button size="sm" w={150} onClick={handleButtonClick(4)}>
+        <Button size="sm" w={150} m={['10px auto', '0px']} onClick={handleButtonClick(4)}>
           Expert
         </Button>
       </Collapse>
