@@ -10,13 +10,21 @@ import {
   ModalBody,
   FormControl,
   FormLabel,
+  FormErrorMessage,
   Input,
   Button,
   Text,
   useToast,
 } from '@chakra-ui/core';
 import {useMutation, queryCache} from 'react-query';
+import {useFormik} from 'formik';
+import {string, object} from 'yup';
 import {makeProtectedRequest} from 'utils/http';
+
+const FormSchema = object({
+  songName: string().max(200).required(),
+  artist: string().max(100).required(),
+});
 
 const createSong = ({songData}) => {
   return makeProtectedRequest('POST', '/songs', {
@@ -60,18 +68,22 @@ const ContentContainer: React.FunctionComponent<ContentContainerProps> = ({
     },
   });
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const formik = useFormik({
+    initialValues: {
+      songName: '',
+      artist: '',
+    },
+    validationSchema: FormSchema,
+    onSubmit: async (values) => {
+      const songData = {
+        songName: values.songName,
+        artist: values.artist,
+        skillLevel,
+      };
 
-    // TODO -> sanitize inputs
-    const songData = {
-      songName: e.currentTarget.songName.value,
-      artist: e.currentTarget.artistName.value,
-      skillLevel,
-    };
-
-    await mutate({songData});
-  };
+      await mutate({songData});
+    },
+  });
 
   const skillLevelSetter = (level) => () => setSkillLevel(level);
 
@@ -88,14 +100,39 @@ const ContentContainer: React.FunctionComponent<ContentContainerProps> = ({
       <ModalHeader>Create new song</ModalHeader>
       <ModalCloseButton />
       <ModalBody pb="6">
-        <form onSubmit={handleSubmit}>
-          <FormControl m="auto" textAlign="left">
+        <form onSubmit={formik.handleSubmit}>
+          <FormControl
+            m="auto"
+            textAlign="left"
+            isInvalid={formik.errors.songName && formik.touched.songName}
+          >
             <FormLabel htmlFor="songName">Song Name</FormLabel>
-            <Input ref={initialRef} type="text" id="songName" size="sm" />
+            <Input
+              ref={initialRef}
+              type="text"
+              id="songName"
+              name="songName"
+              size="sm"
+              value={formik.values.songName}
+              onChange={formik.handleChange}
+            />
+            <FormErrorMessage>{formik.errors.songName}</FormErrorMessage>
           </FormControl>
-          <FormControl m="25px auto" textAlign="left">
-            <FormLabel htmlFor="artistName">Artist Name</FormLabel>
-            <Input type="text" id="artistName" size="sm" />
+          <FormControl
+            m="25px auto"
+            textAlign="left"
+            isInvalid={formik.errors.artist && formik.touched.artist}
+          >
+            <FormLabel htmlFor="artist">Artist Name</FormLabel>
+            <Input
+              type="text"
+              id="artist"
+              name="artist"
+              size="sm"
+              value={formik.values.artist}
+              onChange={formik.handleChange}
+            />
+            <FormErrorMessage>{formik.errors.artist}</FormErrorMessage>
           </FormControl>
           <Box m="25px auto">
             <Text pb="4px" fontWeight="medium">

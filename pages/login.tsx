@@ -1,56 +1,79 @@
 import React, {useState} from 'react';
 import {signIn} from 'next-auth/client';
-import {FormControl, FormLabel, Input, Button, Box, Heading} from '@chakra-ui/core';
-import {string, object, number} from 'yup';
+import {
+  FormControl,
+  FormLabel,
+  FormErrorMessage,
+  Input,
+  Button,
+  Box,
+  Heading,
+} from '@chakra-ui/core';
+import {string, object} from 'yup';
+import {useFormik} from 'formik';
 
 import Layout from 'components/Layout';
 
-const formSchema = object().shape({
-  username: number().required().max(15),
-  password: number().required().max(60),
+// I think there may be a way to extend an interface when making schema (or vice versa)
+const FormSchema = object().shape({
+  username: string().required('Required'),
+  password: string().required('Required'),
 });
 
-interface FormErrors {
-  username?: boolean;
-  password?: boolean;
-}
-
 const Login = () => {
-  const [errors, setErrors] = useState({});
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const formik = useFormik({
+    initialValues: {
+      username: '',
+      password: '',
+    },
+    validationSchema: FormSchema,
+    onSubmit: (values) => {
+      const body = {
+        username: values.username,
+        password: values.password,
+      };
 
-    // TODO -> sanitize inputs
-
-    const body = {
-      username: e.currentTarget.username.value,
-      password: e.currentTarget.password.value,
-    };
-
-    // try {
-    //   const valid = await formSchema.validate(body, {strict: true});
-    // } catch (err) {
-    //   console.error(err);
-    // }
-
-    return signIn('credentials', {
-      ...body,
-      callbackUrl: 'http://localhost:3000/profile',
-    });
-  };
+      return signIn('credentials', {
+        ...body,
+        callbackUrl: 'http://localhost:3000/profile',
+      });
+    },
+  });
 
   return (
     <Layout>
       <Box maxW="sm" m="auto">
         <Heading as="h2">Login</Heading>
-        <form onSubmit={handleSubmit}>
-          <FormControl m="25px auto" textAlign="left">
+        <form onSubmit={formik.handleSubmit}>
+          <FormControl
+            m="25px auto"
+            textAlign="left"
+            isInvalid={formik.errors.username && formik.touched.username}
+          >
             <FormLabel htmlFor="username">Username</FormLabel>
-            <Input type="text" id="username" />
+            <Input
+              type="text"
+              id="username"
+              name="username"
+              value={formik.values.username}
+              onChange={formik.handleChange}
+            />
+            <FormErrorMessage>{formik.errors.username}</FormErrorMessage>
           </FormControl>
-          <FormControl m="25px auto" textAlign="left">
+          <FormControl
+            m="25px auto"
+            textAlign="left"
+            isInvalid={formik.errors.password && formik.touched.password}
+          >
             <FormLabel htmlFor="password">Password</FormLabel>
-            <Input type="password" id="password" />
+            <Input
+              type="password"
+              id="password"
+              name="password"
+              value={formik.values.password}
+              onChange={formik.handleChange}
+            />
+            <FormErrorMessage>{formik.errors.password}</FormErrorMessage>
           </FormControl>
           <Button m="auto" textAlign="center" type="submit">
             Login
