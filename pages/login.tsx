@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {signIn} from 'next-auth/client';
 import {
   FormControl,
@@ -11,6 +11,7 @@ import {
 } from '@chakra-ui/core';
 import {string, object} from 'yup';
 import {useFormik} from 'formik';
+import {useRouter} from 'next/router';
 
 import Layout from 'components/Layout';
 
@@ -21,6 +22,9 @@ const FormSchema = object().shape({
 });
 
 const Login = () => {
+  const router = useRouter();
+  const {error} = router.query;
+
   const formik = useFormik({
     initialValues: {
       username: '',
@@ -44,6 +48,13 @@ const Login = () => {
     <Layout>
       <Box maxW="sm" m="auto">
         <Heading as="h2">Login</Heading>
+        {error ? (
+          <Heading as="h3" size="sm" mt={5}>
+            Please enter a valid username and password.
+          </Heading>
+        ) : (
+          ''
+        )}
         <form onSubmit={formik.handleSubmit}>
           <FormControl
             m="25px auto"

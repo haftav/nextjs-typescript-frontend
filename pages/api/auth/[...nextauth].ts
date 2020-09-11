@@ -45,6 +45,9 @@ const options = {
       },
     }),
   ],
+  pages: {
+    error: '/login',
+  },
   secret: process.env.SECRET,
   session: {
     jwt: true,

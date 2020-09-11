@@ -3,14 +3,8 @@ import {signIn, useSession} from 'next-auth/client';
 
 import Layout from '../components/Layout';
 
-type Session = {user: {name: string}} | null;
-
-interface Props {
-  session: Session;
-}
-
-const LandingPage: FunctionComponent<Props> = () => {
-  const [session, loading] = useSession();
+const LandingPage: FunctionComponent<{}> = () => {
+  const [session] = useSession();
 
   return (
     <Layout>

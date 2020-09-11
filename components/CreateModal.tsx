@@ -202,7 +202,6 @@ interface CreateModalProps {
 const CreateModal: React.FunctionComponent<CreateModalProps> = ({isOpen, closeModal}) => {
   const initialRef = useRef();
 
-  // TODO -> use loading prop to pass to button
   return (
     <Modal size="lg" isOpen={isOpen} onClose={closeModal} initialFocusRef={initialRef}>
       <ModalOverlay />
