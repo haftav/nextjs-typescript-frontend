@@ -4,17 +4,14 @@ import {css} from '@emotion/core';
 
 import Gradient from './Gradient';
 
-interface GradientProps {
-  rating: number;
-}
-
 interface Props extends BoxProps {
-  rating: number;
+  rating: 1 | 2 | 3 | 4;
 }
 
 const SkillLevel: FunctionComponent<Props> = ({rating, ...rest}) => {
   return (
     <Box
+      data-testid="skill-level"
       css={css`
         width: ${rating * 25}%;
         border-radius: 10px;

@@ -34,7 +34,7 @@ const gradients: GradientList = {
 };
 
 interface GradientProps {
-  rating: number;
+  rating: 1 | 2 | 3 | 4;
 }
 
 const Gradient: FunctionComponent<GradientProps> = ({rating}) => {
@@ -54,6 +54,7 @@ const Gradient: FunctionComponent<GradientProps> = ({rating}) => {
       <defs>
         <linearGradient spreadMethod="pad" id={id} x1="0%" y1="0%" x2="100%" y2="0%">
           <stop
+            data-testid="gradient-start"
             offset="0%"
             style={{
               stopColor: gradient.start,
@@ -61,6 +62,7 @@ const Gradient: FunctionComponent<GradientProps> = ({rating}) => {
             }}
           />
           <stop
+            data-testid="gradient-end"
             offset="100"
             style={{
               stopColor: gradient.end,
