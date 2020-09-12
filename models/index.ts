@@ -11,10 +11,21 @@ export interface Song {
   skill: SkillLevel;
 }
 
+export type Rating = 1 | 2 | 3 | 4;
+
+type SkillLevelTitle = 'Beginner' | 'Intermediate' | 'Advanced' | 'Expert';
+
 export interface SkillLevel {
   value: number;
-  defaultTitle: string;
+  defaultTitle: SkillLevelTitle;
 }
+
+export const SkillLevelTitles = {
+  1: 'Beginner',
+  2: 'Intermediate',
+  3: 'Advanced',
+  4: 'Expert',
+};
 
 interface SessionUser {
   email: null;

@@ -1,5 +1,6 @@
 import React from 'react';
 import {css} from '@emotion/core';
+import {useSession} from 'next-auth/client';
 
 import Header from './Header';
 
@@ -9,9 +10,10 @@ const mainContent = css`
 `;
 
 const Layout = ({children}) => {
+  const [session, loading] = useSession();
   return (
     <>
-      <Header />
+      <Header session={session} loading={loading} />
       <div css={mainContent}>{children}</div>
     </>
   );

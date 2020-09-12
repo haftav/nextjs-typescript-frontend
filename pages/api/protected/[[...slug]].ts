@@ -8,14 +8,16 @@ const secret = process.env.JWT_SECRET;
 const apiHandler: NextApiHandler = async (req, res) => {
   const token = await jwt.getToken({req, secret, raw: true});
   if (!token) {
-    return res.status(401).send({});
+    return res.status(401).send(401);
   }
 
-  const slug = buildSlug(req.query.slug);
-  const query = buildQuery(req.query);
-  const endpoint = slug + query;
+  // const slug = buildSlug(req.query.slug);
+  // const query = buildQuery(req.query);
+  // const endpoint = slug + query;
+  const endpoint = req.url.split('/api/protected/')[1];
 
   if (req.method === 'GET') {
+    console.log(req.url);
     // forward request to api, receive data, and perform error handling
     const token = await jwt.getToken({req, secret, raw: true});
     // // TODO -> convert to API_ENDPOINT variable
@@ -29,6 +31,10 @@ const apiHandler: NextApiHandler = async (req, res) => {
         return res.status(200).send(result.data);
       })
       .catch((err) => {
+        const status = parseInt(err.message, 10);
+        if (typeof status === 'number' && !isNaN(status)) {
+          return res.status(status).send(status);
+        }
         return res.status(500).json({err});
       });
   }
@@ -44,11 +50,31 @@ const apiHandler: NextApiHandler = async (req, res) => {
         return res.status(200).send(result.data);
       })
       .catch((err) => {
+        const status = parseInt(err.message, 10);
+        if (typeof status === 'number' && !isNaN(status)) {
+          return res.status(status).send(status);
+        }
         return res.status(500).json({err});
       });
   }
   if (req.method === 'PUT') {
-    // putHandler
+    return makeExternalRequest('PUT', `http://localhost:3030/api/${endpoint}`, {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(req.body),
+    })
+      .then((result) => {
+        return res.status(200).send(result.data);
+      })
+      .catch((err) => {
+        const status = parseInt(err.message, 10);
+        if (typeof status === 'number' && !isNaN(status)) {
+          return res.status(status).send(status);
+        }
+        return res.status(500).json({err});
+      });
   }
   if (req.method === 'DELETE') {
     // deleteHandler

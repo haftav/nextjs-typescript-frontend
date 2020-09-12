@@ -3,22 +3,21 @@ import {BoxProps, Box} from '@chakra-ui/core';
 import {css} from '@emotion/core';
 
 import Gradient from './Gradient';
-
-interface GradientProps {
-  rating: number;
-}
+import {Rating} from 'models';
 
 interface Props extends BoxProps {
-  rating: number;
+  rating: Rating;
 }
 
 const SkillLevel: FunctionComponent<Props> = ({rating, ...rest}) => {
   return (
     <Box
+      data-testid="skill-level"
       css={css`
         width: ${rating * 25}%;
         border-radius: 10px;
         overflow: hidden;
+        transition: width 0.2s ease-out;
       `}
       {...rest}
     >

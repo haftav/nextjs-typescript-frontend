@@ -17,24 +17,16 @@ const SessionContext = React.createContext<Props | null>(null);
 const useSessionContext = () => {
   const context = useContext(SessionContext);
   if (!context) {
-    throw new Error(
-      'Session compound components cannot be rendered outside the Session component'
-    );
+    throw new Error('Session compound components cannot be rendered outside the Session component');
   }
   return context;
 };
 
-const Session: React.FunctionComponent<Props> & SessionComponentInterface = (
-  props
-) => {
+const Session: React.FunctionComponent<Props> & SessionComponentInterface = (props) => {
   const {session, loading} = props;
   const value = useMemo(() => ({session, loading}), [session, loading]);
 
-  return (
-    <SessionContext.Provider value={value}>
-      {props.children}
-    </SessionContext.Provider>
-  );
+  return <SessionContext.Provider value={value}>{props.children}</SessionContext.Provider>;
 };
 
 const LoggedIn = ({children}) => {
