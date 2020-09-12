@@ -11,6 +11,8 @@ export interface Song {
   skill: SkillLevel;
 }
 
+export type Rating = 1 | 2 | 3 | 4;
+
 type SkillLevelTitle = 'Beginner' | 'Intermediate' | 'Advanced' | 'Expert';
 
 export interface SkillLevel {

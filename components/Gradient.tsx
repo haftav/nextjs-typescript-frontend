@@ -2,6 +2,8 @@ import React, {FunctionComponent, useMemo} from 'react';
 import {v4 as uuidv4} from 'uuid';
 import {css} from '@emotion/core';
 
+import {Rating} from 'models';
+
 export type GradientEntity = {
   start: string;
   end: string;
@@ -34,7 +36,7 @@ const gradients: GradientList = {
 };
 
 interface GradientProps {
-  rating: 1 | 2 | 3 | 4;
+  rating: Rating;
 }
 
 const Gradient: FunctionComponent<GradientProps> = ({rating}) => {
@@ -42,6 +44,7 @@ const Gradient: FunctionComponent<GradientProps> = ({rating}) => {
   const gradient = gradients[rating];
   return (
     <svg
+      data-testid="gradient-svg"
       xmlns="http://www.w3.org/2000/svg"
       version="1.1"
       style={{width: '100%', height: 10}}

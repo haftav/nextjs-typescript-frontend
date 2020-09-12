@@ -4,6 +4,11 @@ import {render, screen} from '@testing-library/react';
 import SkillLevel from 'components/SkillLevel';
 
 describe('SkillLevel component should render correctly', () => {
+  test('Renders a Gradient', () => {
+    render(<SkillLevel rating={1} />);
+
+    expect(screen.getByTestId('gradient-svg')).toBeVisible();
+  });
   test('Renders correctly for rating of 1', () => {
     render(<SkillLevel rating={1} />);
 

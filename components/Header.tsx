@@ -1,10 +1,10 @@
 import React, {useState} from 'react';
 import Link from 'next/link';
 import {Flex, Box, Button, Text, Menu, MenuButton, MenuList, MenuItem} from '@chakra-ui/core';
-import {useSession} from 'next-auth/client';
 import {signOut} from 'next-auth/client';
 
 import Session from 'components/Session';
+import {Session as SessionModel} from 'models';
 import CreateModal from './CreateModal';
 
 const ProfileLink = () => (
@@ -74,8 +74,12 @@ const CreateMenu: React.FunctionComponent<CreateMenuProps> = ({toggleModal}) => 
   );
 };
 
-const Header: React.FunctionComponent<{}> = () => {
-  const [session, loading] = useSession();
+interface HeaderProps {
+  session: SessionModel;
+  loading: boolean;
+}
+
+const Header: React.FunctionComponent<HeaderProps> = ({session, loading}) => {
   const [modalOpen, setModalOpen] = useState<boolean>(false);
 
   const toggleModal = () => {

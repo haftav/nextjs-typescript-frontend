@@ -3,9 +3,10 @@ import {BoxProps, Box} from '@chakra-ui/core';
 import {css} from '@emotion/core';
 
 import Gradient from './Gradient';
+import {Rating} from 'models';
 
 interface Props extends BoxProps {
-  rating: 1 | 2 | 3 | 4;
+  rating: Rating;
 }
 
 const SkillLevel: FunctionComponent<Props> = ({rating, ...rest}) => {

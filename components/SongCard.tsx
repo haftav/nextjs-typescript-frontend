@@ -14,7 +14,7 @@ import {useMutation, queryCache} from 'react-query';
 import {makeProtectedRequest} from 'utils/http';
 
 import SkillLevel from './SkillLevel';
-import {Song, SkillLevelTitles} from '../models';
+import {Rating, Song, SkillLevelTitles} from '../models';
 
 interface SongUpdaterParams {
   songName?: string;
@@ -90,6 +90,7 @@ const SongCard: FunctionComponent<Props> = ({song}) => {
     setIsOpen((prevState) => !prevState);
   };
 
+  // close over skillLevel argument for use in event handler
   const handleButtonClick = (skillLevel: number) => () => {
     const songData = {
       id: song.id,
@@ -97,6 +98,14 @@ const SongCard: FunctionComponent<Props> = ({song}) => {
     };
 
     mutate(songData);
+  };
+
+  const handleButtonColor = (level) => {
+    if (song.skill.value === level) {
+      return 'green';
+    }
+
+    return 'gray';
   };
 
   return (
@@ -120,7 +129,7 @@ const SongCard: FunctionComponent<Props> = ({song}) => {
         <Box position="absolute" top="15px" right="15px" w="auto" h="auto">
           <Badge fontSize={['10px', '12px']}>{song.skill.defaultTitle}</Badge>
         </Box>
-        <SkillLevel mt="15px" rating={song.skill.value} />
+        <SkillLevel mt="15px" rating={song.skill.value as Rating} />
       </Box>
       <Collapse
         as={Flex}
@@ -132,16 +141,40 @@ const SongCard: FunctionComponent<Props> = ({song}) => {
         flexWrap="wrap"
         onClick={(e) => e.stopPropagation()}
       >
-        <Button size="sm" w={150} m={['10px auto', '0px']} onClick={handleButtonClick(1)}>
+        <Button
+          size="sm"
+          w={150}
+          m={['10px auto', '0px']}
+          variantColor={handleButtonColor(1)}
+          onClick={handleButtonClick(1)}
+        >
           Beginner
         </Button>
-        <Button size="sm" w={150} m={['10px auto', '0px']} onClick={handleButtonClick(2)}>
+        <Button
+          size="sm"
+          w={150}
+          m={['10px auto', '0px']}
+          variantColor={handleButtonColor(2)}
+          onClick={handleButtonClick(2)}
+        >
           Intermediate
         </Button>
-        <Button size="sm" w={150} m={['10px auto', '0px']} onClick={handleButtonClick(3)}>
+        <Button
+          size="sm"
+          w={150}
+          m={['10px auto', '0px']}
+          variantColor={handleButtonColor(3)}
+          onClick={handleButtonClick(3)}
+        >
           Advanced
         </Button>
-        <Button size="sm" w={150} m={['10px auto', '0px']} onClick={handleButtonClick(4)}>
+        <Button
+          size="sm"
+          w={150}
+          m={['10px auto', '0px']}
+          variantColor={handleButtonColor(4)}
+          onClick={handleButtonClick(4)}
+        >
           Expert
         </Button>
       </Collapse>
