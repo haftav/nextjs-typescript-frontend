@@ -117,6 +117,13 @@ const Header: React.FunctionComponent<HeaderProps> = ({session, loading}) => {
             <RegisterLink />
           </Session.LoggedOut>
           <Session.LoggedIn>
+            {(loadedSession: SessionModel) => (
+              <Text fontSize="sm" mr="10px">
+                {loadedSession.user.name}
+              </Text>
+            )}
+          </Session.LoggedIn>
+          <Session.LoggedIn>
             <LogoutLink />
           </Session.LoggedIn>
         </Flex>

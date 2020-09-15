@@ -41,10 +41,12 @@ const updateSong = (params: SongUpdaterParams) => {
 
 interface Props {
   song: Song;
+  isOpen: boolean;
+  setOpenCard: (isCurrentlyOpen: boolean) => void;
 }
 
-const SongCard: FunctionComponent<Props> = ({song}) => {
-  const [isOpen, setIsOpen] = useState<boolean>(false);
+const SongCard: FunctionComponent<Props> = ({song, isOpen, setOpenCard}) => {
+  // const [isOpen, setIsOpen] = useState<boolean>(false);
   const toast = useToast();
 
   const [mutate] = useMutation(updateSong, {
@@ -87,7 +89,8 @@ const SongCard: FunctionComponent<Props> = ({song}) => {
   });
 
   const handleClick = (): void => {
-    setIsOpen((prevState) => !prevState);
+    // setIsOpen((prevState) => !prevState);
+    setOpenCard(isOpen);
   };
 
   // close over skillLevel argument for use in event handler

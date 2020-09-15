@@ -1,5 +1,5 @@
-import React, {FunctionComponent} from 'react';
-import {useSession} from 'next-auth/client';
+import React, {FunctionComponent, useState} from 'react';
+import {Heading} from '@chakra-ui/core';
 import {useQuery} from 'react-query';
 
 import SongCard from 'components/SongCard';
@@ -13,7 +13,7 @@ interface QueryPromise {
 }
 
 const Profile: FunctionComponent<{}> = () => {
-  const [session] = useSession();
+  const [openSongCard, setOpenSongCard] = useState<null | number>(null);
   const {status, data: songs} = useQuery<Song[]>(
     'songs',
     () => {
@@ -32,18 +32,32 @@ const Profile: FunctionComponent<{}> = () => {
     {retry: false}
   );
 
-  const renderSongs = () => {
-    const {user} = session;
-
-    return (
-      <>
-        <h1>{user.name}</h1>
-        <div>{songs ? songs.map((song) => <SongCard key={song.id} song={song} />) : null}</div>
-      </>
-    );
+  // close over index so inner function knows which card to set as open
+  const setOpenCard = (idx) => (isCurrentlyOpen: boolean) => {
+    setOpenSongCard(isCurrentlyOpen ? null : idx);
   };
 
   const renderLoading = () => <div>Loading songs...</div>;
+
+  const renderSongs = () => {
+    return (
+      <>
+        <Heading>Songs</Heading>
+        <div>
+          {songs
+            ? songs.map((song, idx) => (
+                <SongCard
+                  isOpen={idx === openSongCard}
+                  setOpenCard={setOpenCard(idx)}
+                  key={song.id}
+                  song={song}
+                />
+              ))
+            : null}
+        </div>
+      </>
+    );
+  };
 
   const renderContent = () => {
     if (status === 'loading') {

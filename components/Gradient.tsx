@@ -74,7 +74,7 @@ const Gradient: FunctionComponent<GradientProps> = ({rating}) => {
           />
         </linearGradient>
       </defs>
-      <rect width="100%" y="0" x="0" fill={`url(#${id})`} />
+      <rect width="100%" height="100%" y="0" x="0" fill={`url(#${id})`} />
     </svg>
   );
 };
