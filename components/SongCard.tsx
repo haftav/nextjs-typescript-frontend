@@ -14,6 +14,8 @@ import {useMutation, queryCache} from 'react-query';
 import {makeProtectedRequest} from 'utils/http';
 
 import SkillLevel from './SkillLevel';
+import EditModal from './EditModal';
+
 import {Rating, Song, SkillLevelTitles} from '../models';
 
 interface SongUpdaterParams {
@@ -47,6 +49,7 @@ interface Props {
 
 const SongCard: FunctionComponent<Props> = ({song, isOpen, setOpenCard}) => {
   // const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [isEditing, setIsEditing] = useState(false);
   const toast = useToast();
 
   const [mutate] = useMutation(updateSong, {
@@ -111,8 +114,16 @@ const SongCard: FunctionComponent<Props> = ({song, isOpen, setOpenCard}) => {
     return 'gray';
   };
 
+  const toggleEditing = (e?: React.MouseEvent) => {
+    if (e) {
+      e.stopPropagation();
+    }
+    setIsEditing((prevState) => !prevState);
+  };
+
   return (
     <PseudoBox
+      role="group"
       maxW="3xl"
       my={5}
       mx="auto"
@@ -122,6 +133,24 @@ const SongCard: FunctionComponent<Props> = ({song, isOpen, setOpenCard}) => {
       onClick={handleClick}
       _hover={{cursor: 'pointer'}}
     >
+      <Button
+        w="10px"
+        h="35px"
+        variant="ghost"
+        size="sm"
+        fontSize="2xl"
+        pos="absolute"
+        right="-40px"
+        top="50%"
+        pl="0px"
+        pr="0px"
+        minW="25px"
+        transform="translateY(-50%)"
+        zIndex={15}
+        onClick={toggleEditing}
+      >
+        &#8942;
+      </Button>
       <Box mb={5} p="15px 15px 0px 15px">
         <Heading as="h2" fontSize={['md', 'lg']} textAlign="left" maxW="80%">
           {song.songName}
@@ -130,7 +159,9 @@ const SongCard: FunctionComponent<Props> = ({song, isOpen, setOpenCard}) => {
           {song.artist}
         </Text>
         <Box position="absolute" top="15px" right="15px" w="auto" h="auto">
-          <Badge fontSize={['10px', '12px']}>{song.skill.defaultTitle}</Badge>
+          <Box opacity={1} pos="absolute" right="0">
+            <Badge fontSize={['10px', '12px']}>{song.skill.defaultTitle}</Badge>
+          </Box>
         </Box>
         <SkillLevel mt="15px" rating={song.skill.value as Rating} />
       </Box>
@@ -181,6 +212,7 @@ const SongCard: FunctionComponent<Props> = ({song, isOpen, setOpenCard}) => {
           Expert
         </Button>
       </Collapse>
+      <EditModal isOpen={isEditing} closeModal={toggleEditing} initialData={song} />
     </PseudoBox>
   );
 };

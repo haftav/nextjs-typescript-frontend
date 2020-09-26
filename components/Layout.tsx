@@ -1,20 +1,17 @@
 import React from 'react';
-import {css} from '@emotion/core';
 import {useSession} from 'next-auth/client';
+import {Box} from '@chakra-ui/core';
 
 import Header from './Header';
-
-const mainContent = css`
-  text-align: center;
-  padding: 25px;
-`;
 
 const Layout = ({children}) => {
   const [session, loading] = useSession();
   return (
     <>
       <Header session={session} loading={loading} />
-      <div css={mainContent}>{children}</div>
+      <Box padding={['25px 50px']} textAlign="center">
+        {children}
+      </Box>
     </>
   );
 };
