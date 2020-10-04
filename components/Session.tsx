@@ -32,7 +32,11 @@ const Session: React.FunctionComponent<Props> & SessionComponentInterface = (pro
 const LoggedIn = ({children}) => {
   const {session, loading} = useSessionContext();
 
-  return !loading && session ? children : null;
+  return !loading && session
+    ? typeof children === 'function'
+      ? children(session)
+      : children
+    : null;
 };
 
 const LoggedOut = ({children}) => {

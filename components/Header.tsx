@@ -42,7 +42,7 @@ const LogoutLink = () => (
     variant="outline"
     w="100px"
     m="0px 10px"
-    onClick={() => signOut({callbackUrl: 'http://localhost:3000/'})}
+    onClick={() => signOut({callbackUrl: process.env.NEXT_PUBLIC_CALLBACK_URL})}
   >
     Log Out
   </Button>
@@ -116,6 +116,13 @@ const Header: React.FunctionComponent<HeaderProps> = ({session, loading}) => {
           <Session.LoggedOut>
             <RegisterLink />
           </Session.LoggedOut>
+          <Session.LoggedIn>
+            {(loadedSession: SessionModel) => (
+              <Text fontSize="sm" mr="10px">
+                {loadedSession.user.name}
+              </Text>
+            )}
+          </Session.LoggedIn>
           <Session.LoggedIn>
             <LogoutLink />
           </Session.LoggedIn>
