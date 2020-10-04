@@ -9,7 +9,7 @@ const apiHandler: NextApiHandler = async (req, res) => {
 
   if (req.method === 'GET') {
     // // TODO -> convert to API_ENDPOINT variable
-    return makeExternalRequest('GET', `http://localhost:3030/api/${endpoint}`, {
+    return makeExternalRequest('GET', `${process.env.API_ENDPOINT}/api/${endpoint}`, {
       headers: {
         'Content-Type': 'application/json',
       },
@@ -23,7 +23,7 @@ const apiHandler: NextApiHandler = async (req, res) => {
       });
   }
   if (req.method === 'POST') {
-    return makeExternalRequest('POST', `http://localhost:3030/api/${endpoint}`, {
+    return makeExternalRequest('POST', `${process.env.API_ENDPOINT}/api/${endpoint}`, {
       headers: {
         'Content-Type': 'application/json',
       },

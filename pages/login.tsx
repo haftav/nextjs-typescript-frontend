@@ -39,7 +39,7 @@ const Login = () => {
 
       return signIn('credentials', {
         ...body,
-        callbackUrl: 'http://localhost:3000/profile',
+        callbackUrl: `${process.env.NEXT_PUBLIC_CALLBACK_URL}/profile`,
       });
     },
   });

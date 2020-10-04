@@ -1,9 +1,8 @@
 import {NextApiHandler} from 'next';
 import jwt from 'next-auth/jwt';
 import {makeExternalRequest} from 'utils/http';
-import {buildSlug, buildQuery} from 'utils';
 
-const secret = process.env.JWT_SECRET;
+const secret = process.env.SECRET;
 
 const apiHandler: NextApiHandler = async (req, res) => {
   const token = await jwt.getToken({req, secret, raw: true});
@@ -17,11 +16,10 @@ const apiHandler: NextApiHandler = async (req, res) => {
   const endpoint = req.url.split('/api/protected/')[1];
 
   if (req.method === 'GET') {
-    console.log(req.url);
     // forward request to api, receive data, and perform error handling
     const token = await jwt.getToken({req, secret, raw: true});
     // // TODO -> convert to API_ENDPOINT variable
-    return makeExternalRequest('GET', `http://localhost:3030/api/${endpoint}`, {
+    return makeExternalRequest('GET', `${process.env.API_ENDPOINT}/api/${endpoint}`, {
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`,
@@ -39,7 +37,7 @@ const apiHandler: NextApiHandler = async (req, res) => {
       });
   }
   if (req.method === 'POST') {
-    return makeExternalRequest('POST', `http://localhost:3030/api/${endpoint}`, {
+    return makeExternalRequest('POST', `${process.env.API_ENDPOINT}/api/${endpoint}`, {
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`,
@@ -58,7 +56,7 @@ const apiHandler: NextApiHandler = async (req, res) => {
       });
   }
   if (req.method === 'PUT') {
-    return makeExternalRequest('PUT', `http://localhost:3030/api/${endpoint}`, {
+    return makeExternalRequest('PUT', `${process.env.API_ENDPOINT}/api/${endpoint}`, {
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`,

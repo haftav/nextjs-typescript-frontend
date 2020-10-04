@@ -17,7 +17,7 @@ const options = {
         password: {label: 'Password', type: 'password'},
       },
       authorize: async (credentials) => {
-        const response = await fetch('http://localhost:3030/api/auth/login', {
+        const response = await fetch(`${process.env.API_ENDPOINT}/api/auth/login`, {
           method: 'POST',
           credentials: 'include',
           headers: {

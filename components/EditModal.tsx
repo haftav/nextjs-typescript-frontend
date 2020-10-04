@@ -57,7 +57,7 @@ const ModalContentContainer: React.FunctionComponent<ModalContentContainerProps>
       toast({
         title: 'Song updated!',
         status: 'success',
-        duration: 6000,
+        duration: 3000,
         isClosable: true,
       });
       closeModal();

@@ -42,7 +42,7 @@ const LogoutLink = () => (
     variant="outline"
     w="100px"
     m="0px 10px"
-    onClick={() => signOut({callbackUrl: 'http://localhost:3000/'})}
+    onClick={() => signOut({callbackUrl: process.env.NEXT_PUBLIC_CALLBACK_URL})}
   >
     Log Out
   </Button>

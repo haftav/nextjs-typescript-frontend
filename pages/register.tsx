@@ -52,7 +52,7 @@ const Register: FunctionComponent<{}> = () => {
         await mutate({userData});
         return signIn('credentials', {
           ...userData,
-          callbackUrl: 'http://localhost:3000/profile',
+          callbackUrl: `${process.env.NEXT_PUBLIC_CALLBACK_URL}/profile`,
         });
       } catch (err) {
         console.log('unable to sign in.');
