@@ -47,6 +47,7 @@ interface Props {
   setOpenCard: (isCurrentlyOpen: boolean) => void;
 }
 
+// add success update?
 const SongCard: FunctionComponent<Props> = ({song, isOpen, setOpenCard}) => {
   // const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isEditing, setIsEditing] = useState(false);
@@ -63,7 +64,7 @@ const SongCard: FunctionComponent<Props> = ({song, isOpen, setOpenCard}) => {
         const {songName, artist, skillLevel, id} = params;
         const index = oldData.findIndex((el) => el.id === id);
         if (index < 0) return oldData;
-        const songToUpdate = {...oldData[index]};
+        const songToUpdate = {...oldData[index], skill: {...oldData[index].skill}};
         if (songName) songToUpdate.songName = songName;
         if (artist) songToUpdate.artist = artist;
         if (skillLevel) {
@@ -85,9 +86,6 @@ const SongCard: FunctionComponent<Props> = ({song, isOpen, setOpenCard}) => {
         isClosable: true,
       });
       return rollback();
-    },
-    onSettled: () => {
-      queryCache.invalidateQueries('songs');
     },
   });
 
