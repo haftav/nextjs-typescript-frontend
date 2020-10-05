@@ -47,6 +47,7 @@ interface Props {
   setOpenCard: (isCurrentlyOpen: boolean) => void;
 }
 
+// add success update?
 const SongCard: FunctionComponent<Props> = ({song, isOpen, setOpenCard}) => {
   // const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isEditing, setIsEditing] = useState(false);
@@ -85,9 +86,6 @@ const SongCard: FunctionComponent<Props> = ({song, isOpen, setOpenCard}) => {
         isClosable: true,
       });
       return rollback();
-    },
-    onSettled: () => {
-      queryCache.invalidateQueries('songs');
     },
   });
 
