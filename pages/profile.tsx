@@ -26,7 +26,9 @@ const Profile: FunctionComponent<{}> = () => {
         signal,
       }).then((data) => data.songs);
 
-      promise.cancel = () => controller.abort();
+      promise.cancel = () => {
+        return controller.abort();
+      };
       return promise;
     },
     {retry: false}

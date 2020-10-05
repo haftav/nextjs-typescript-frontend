@@ -63,7 +63,7 @@ const SongCard: FunctionComponent<Props> = ({song, isOpen, setOpenCard}) => {
         const {songName, artist, skillLevel, id} = params;
         const index = oldData.findIndex((el) => el.id === id);
         if (index < 0) return oldData;
-        const songToUpdate = {...oldData[index]};
+        const songToUpdate = {...oldData[index], skill: {...oldData[index].skill}};
         if (songName) songToUpdate.songName = songName;
         if (artist) songToUpdate.artist = artist;
         if (skillLevel) {
