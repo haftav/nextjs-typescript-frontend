@@ -94,6 +94,13 @@ const SongCard: FunctionComponent<Props> = ({song, isOpen, setOpenCard}) => {
     setOpenCard(isOpen);
   };
 
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLDivElement>): void => {
+    e.stopPropagation();
+    if (e.key === 'Enter') {
+      handleClick();
+    }
+  };
+
   // close over skillLevel argument for use in event handler
   const handleButtonClick = (skillLevel: number) => () => {
     const songData = {
@@ -129,7 +136,9 @@ const SongCard: FunctionComponent<Props> = ({song, isOpen, setOpenCard}) => {
       borderWidth="1px"
       rounded="lg"
       onClick={handleClick}
+      onKeyDown={handleKeyPress}
       _hover={{cursor: 'pointer'}}
+      tabIndex={0}
     >
       <Button
         w="10px"
