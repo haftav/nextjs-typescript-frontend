@@ -169,8 +169,8 @@ const SongCard: FunctionComponent<Props> = ({song, isOpen, setOpenCard}) => {
         isOpen={isOpen}
         pt="15px"
         pb="15px"
-        justifyItems="center"
         gridTemplateColumns={['1fr', '1fr', 'repeat(4, 1fr)']}
+        justifyItems="center"
         onClick={(e) => e.stopPropagation()}
       >
         <Button
