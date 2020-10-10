@@ -9,6 +9,7 @@ import {
   PseudoBox,
   Text,
   useToast,
+  Grid,
 } from '@chakra-ui/core';
 import {useMutation, queryCache} from 'react-query';
 import {makeProtectedRequest} from 'utils/http';
@@ -164,19 +165,18 @@ const SongCard: FunctionComponent<Props> = ({song, isOpen, setOpenCard}) => {
         <SkillLevel mt="15px" rating={song.skill.value as Rating} />
       </Box>
       <Collapse
-        as={Flex}
+        as={Grid}
         isOpen={isOpen}
         pt="15px"
         pb="15px"
-        justifyContent="space-around"
-        flexDir={['row']}
-        flexWrap="wrap"
+        justifyItems="center"
+        gridTemplateColumns={['1fr', '1fr', 'repeat(4, 1fr)']}
         onClick={(e) => e.stopPropagation()}
       >
         <Button
           size="sm"
-          w={150}
-          m={['10px auto', '0px']}
+          w={['80%', '80%', 150]}
+          m={['10px auto', '10px auto', '0px']}
           variantColor={handleButtonColor(1)}
           onClick={handleButtonClick(1)}
         >
@@ -184,8 +184,8 @@ const SongCard: FunctionComponent<Props> = ({song, isOpen, setOpenCard}) => {
         </Button>
         <Button
           size="sm"
-          w={150}
-          m={['10px auto', '0px']}
+          w={['80%', '80%', 150]}
+          m={['10px auto', '10px auto', '0px']}
           variantColor={handleButtonColor(2)}
           onClick={handleButtonClick(2)}
         >
@@ -193,8 +193,8 @@ const SongCard: FunctionComponent<Props> = ({song, isOpen, setOpenCard}) => {
         </Button>
         <Button
           size="sm"
-          w={150}
-          m={['10px auto', '0px']}
+          w={['80%', '80%', 150]}
+          m={['10px auto', '10px auto', '0px']}
           variantColor={handleButtonColor(3)}
           onClick={handleButtonClick(3)}
         >
@@ -202,8 +202,8 @@ const SongCard: FunctionComponent<Props> = ({song, isOpen, setOpenCard}) => {
         </Button>
         <Button
           size="sm"
-          w={150}
-          m={['10px auto', '0px']}
+          w={['80%', '80%', 150]}
+          m={['10px auto', '10px auto', '0px']}
           variantColor={handleButtonColor(4)}
           onClick={handleButtonClick(4)}
         >
