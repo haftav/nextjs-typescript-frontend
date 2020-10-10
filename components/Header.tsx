@@ -4,6 +4,7 @@ import {Flex, Box, Button, Text, Menu, MenuButton, MenuList, MenuItem} from '@ch
 import {signOut} from 'next-auth/client';
 
 import Session from 'components/Session';
+import MobileMenu from './MobileMenu';
 import {Session as SessionModel} from 'models';
 import CreateModal from './CreateModal';
 
@@ -89,7 +90,13 @@ const Header: React.FunctionComponent<HeaderProps> = ({session, loading}) => {
   return (
     <Session session={session} loading={loading}>
       <CreateModal isOpen={modalOpen} closeModal={toggleModal} />
-      <Flex justify="center" align="center" position="relative" height="100px">
+      <Flex
+        justify="center"
+        align="center"
+        position="relative"
+        height="100px"
+        display={['none', 'none', 'flex']}
+      >
         <Box position="absolute" left="25px">
           <Flex align="center">
             <Link href="/">
@@ -128,6 +135,7 @@ const Header: React.FunctionComponent<HeaderProps> = ({session, loading}) => {
           </Session.LoggedIn>
         </Flex>
       </Flex>
+      <MobileMenu />
     </Session>
   );
 };

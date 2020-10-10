@@ -21,7 +21,7 @@ import {useMutation, queryCache} from 'react-query';
 import {useFormik} from 'formik';
 import {string, object} from 'yup';
 import {makeProtectedRequest} from 'utils/http';
-import {SkillLevel, Song} from 'models';
+import {Song} from 'models';
 
 const FormSchema = object({
   songName: string().max(200).required(),

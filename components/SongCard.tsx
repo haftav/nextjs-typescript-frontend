@@ -5,7 +5,6 @@ import {
   Box,
   Badge,
   Heading,
-  Flex,
   PseudoBox,
   Text,
   useToast,
