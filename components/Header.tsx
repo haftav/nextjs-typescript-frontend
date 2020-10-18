@@ -1,11 +1,13 @@
 import React, {useState} from 'react';
 import Link from 'next/link';
-import {Flex, Box, Button, Text, Menu, MenuButton, MenuList, MenuItem} from '@chakra-ui/core';
+import {Flex, Box, Button, Text} from '@chakra-ui/core';
 import {signOut} from 'next-auth/client';
 
 import Session from 'components/Session';
-import MobileMenu from './MobileMenu';
+import MobileHeader from './MobileHeader';
+import DesktopHeader from './DesktopHeader';
 import {Session as SessionModel} from 'models';
+import CreateMenu from './CreateMenu';
 import CreateModal from './CreateModal';
 
 const ProfileLink = () => (
@@ -49,32 +51,6 @@ const LogoutLink = () => (
   </Button>
 );
 
-interface CreateMenuProps {
-  toggleModal: () => void;
-}
-
-const CreateMenu: React.FunctionComponent<CreateMenuProps> = ({toggleModal}) => {
-  return (
-    <Box marginLeft="25px">
-      <Menu>
-        <MenuButton
-          as={Button}
-          size="sm"
-          fontSize="sm"
-          /* @ts-expect-error */
-          rightIcon="chevron-down"
-        >
-          Create
-        </MenuButton>
-        <MenuList minW="150px" placement="bottom-start">
-          <MenuItem onClick={toggleModal}>Song</MenuItem>
-          <MenuItem>List</MenuItem>
-        </MenuList>
-      </Menu>
-    </Box>
-  );
-};
-
 interface HeaderProps {
   session: SessionModel;
   loading: boolean;
@@ -90,52 +66,8 @@ const Header: React.FunctionComponent<HeaderProps> = ({session, loading}) => {
   return (
     <Session session={session} loading={loading}>
       <CreateModal isOpen={modalOpen} closeModal={toggleModal} />
-      <Flex
-        justify="center"
-        align="center"
-        position="relative"
-        height="100px"
-        display={['none', 'none', 'flex']}
-      >
-        <Box position="absolute" left="25px">
-          <Flex align="center">
-            <Link href="/">
-              <a>
-                <Box>
-                  <Text fontSize="2xl" fontWeight="bold">
-                    My Application
-                  </Text>
-                </Box>
-              </a>
-            </Link>
-            <Session.LoggedIn>
-              <ProfileLink />
-            </Session.LoggedIn>
-            <Session.LoggedIn>
-              <CreateMenu toggleModal={toggleModal} />
-            </Session.LoggedIn>
-          </Flex>
-        </Box>
-        <Flex position="absolute" right="25px" align="center">
-          <Session.LoggedOut>
-            <LoginLink />
-          </Session.LoggedOut>
-          <Session.LoggedOut>
-            <RegisterLink />
-          </Session.LoggedOut>
-          <Session.LoggedIn>
-            {(loadedSession: SessionModel) => (
-              <Text fontSize="sm" mr="10px">
-                {loadedSession.user.name}
-              </Text>
-            )}
-          </Session.LoggedIn>
-          <Session.LoggedIn>
-            <LogoutLink />
-          </Session.LoggedIn>
-        </Flex>
-      </Flex>
-      <MobileMenu />
+      <DesktopHeader toggleModal={toggleModal} />
+      <MobileHeader />
     </Session>
   );
 };

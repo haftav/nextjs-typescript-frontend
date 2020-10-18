@@ -47,7 +47,7 @@ interface Props {
   setOpenCard: (isCurrentlyOpen: boolean) => void;
 }
 
-// add success update?
+// TODO -> convert buttons into reusable component
 const SongCard: FunctionComponent<Props> = ({song, isOpen, setOpenCard}) => {
   // const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isEditing, setIsEditing] = useState(false);
