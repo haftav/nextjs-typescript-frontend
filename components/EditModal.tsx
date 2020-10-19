@@ -29,7 +29,8 @@ const FormSchema = object({
 });
 
 // mutation for react query
-const createSong = ({id, ...songData}) => {
+// TODO -> update name to updateSong
+const updateSong = ({id, ...songData}) => {
   return makeProtectedRequest('PUT', `/songs/${id}`, {
     headers: {
       'Content-Type': 'application/json',
@@ -52,7 +53,7 @@ const ModalContentContainer: React.FunctionComponent<ModalContentContainerProps>
 }) => {
   const [skillLevel, setSkillLevel] = useState<number>(initialData.skill.value);
   const toast = useToast();
-  const [mutate, {status}] = useMutation(createSong, {
+  const [mutate, {status}] = useMutation(updateSong, {
     onSuccess: () => {
       queryCache.invalidateQueries('songs');
       toast({
@@ -122,6 +123,7 @@ const ModalContentContainer: React.FunctionComponent<ModalContentContainerProps>
                 id="songName"
                 name="songName"
                 size="sm"
+                fontSize="16px"
                 value={formik.values.songName}
                 onChange={formik.handleChange}
               />
@@ -138,6 +140,7 @@ const ModalContentContainer: React.FunctionComponent<ModalContentContainerProps>
                 id="artist"
                 name="artist"
                 size="sm"
+                fontSize="16px"
                 value={formik.values.artist}
                 onChange={formik.handleChange}
               />
