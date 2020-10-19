@@ -5,10 +5,10 @@ import {
   Box,
   Badge,
   Heading,
-  Flex,
   PseudoBox,
   Text,
   useToast,
+  Grid,
 } from '@chakra-ui/core';
 import {useMutation, queryCache} from 'react-query';
 import {makeProtectedRequest} from 'utils/http';
@@ -47,7 +47,7 @@ interface Props {
   setOpenCard: (isCurrentlyOpen: boolean) => void;
 }
 
-// add success update?
+// TODO -> convert buttons into reusable component
 const SongCard: FunctionComponent<Props> = ({song, isOpen, setOpenCard}) => {
   // const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isEditing, setIsEditing] = useState(false);
@@ -94,6 +94,13 @@ const SongCard: FunctionComponent<Props> = ({song, isOpen, setOpenCard}) => {
     setOpenCard(isOpen);
   };
 
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLDivElement>): void => {
+    e.stopPropagation();
+    if (e.key === 'Enter') {
+      handleClick();
+    }
+  };
+
   // close over skillLevel argument for use in event handler
   const handleButtonClick = (skillLevel: number) => () => {
     const songData = {
@@ -129,7 +136,9 @@ const SongCard: FunctionComponent<Props> = ({song, isOpen, setOpenCard}) => {
       borderWidth="1px"
       rounded="lg"
       onClick={handleClick}
+      onKeyDown={handleKeyPress}
       _hover={{cursor: 'pointer'}}
+      tabIndex={0}
     >
       <Button
         w="10px"
@@ -164,19 +173,18 @@ const SongCard: FunctionComponent<Props> = ({song, isOpen, setOpenCard}) => {
         <SkillLevel mt="15px" rating={song.skill.value as Rating} />
       </Box>
       <Collapse
-        as={Flex}
+        as={Grid}
         isOpen={isOpen}
         pt="15px"
         pb="15px"
-        justifyContent="space-around"
-        flexDir={['row']}
-        flexWrap="wrap"
+        gridTemplateColumns={['1fr', '1fr', 'repeat(4, 1fr)']}
+        justifyItems="center"
         onClick={(e) => e.stopPropagation()}
       >
         <Button
           size="sm"
-          w={150}
-          m={['10px auto', '0px']}
+          w={['80%', '80%', 150]}
+          m={['10px auto', '10px auto', '0px']}
           variantColor={handleButtonColor(1)}
           onClick={handleButtonClick(1)}
         >
@@ -184,8 +192,8 @@ const SongCard: FunctionComponent<Props> = ({song, isOpen, setOpenCard}) => {
         </Button>
         <Button
           size="sm"
-          w={150}
-          m={['10px auto', '0px']}
+          w={['80%', '80%', 150]}
+          m={['10px auto', '10px auto', '0px']}
           variantColor={handleButtonColor(2)}
           onClick={handleButtonClick(2)}
         >
@@ -193,8 +201,8 @@ const SongCard: FunctionComponent<Props> = ({song, isOpen, setOpenCard}) => {
         </Button>
         <Button
           size="sm"
-          w={150}
-          m={['10px auto', '0px']}
+          w={['80%', '80%', 150]}
+          m={['10px auto', '10px auto', '0px']}
           variantColor={handleButtonColor(3)}
           onClick={handleButtonClick(3)}
         >
@@ -202,8 +210,8 @@ const SongCard: FunctionComponent<Props> = ({song, isOpen, setOpenCard}) => {
         </Button>
         <Button
           size="sm"
-          w={150}
-          m={['10px auto', '0px']}
+          w={['80%', '80%', 150]}
+          m={['10px auto', '10px auto', '0px']}
           variantColor={handleButtonColor(4)}
           onClick={handleButtonClick(4)}
         >

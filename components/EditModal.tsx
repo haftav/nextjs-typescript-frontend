@@ -15,12 +15,13 @@ import {
   Button,
   Text,
   useToast,
+  Grid,
 } from '@chakra-ui/core';
 import {useMutation, queryCache} from 'react-query';
 import {useFormik} from 'formik';
 import {string, object} from 'yup';
 import {makeProtectedRequest} from 'utils/http';
-import {SkillLevel, Song} from 'models';
+import {Song} from 'models';
 
 const FormSchema = object({
   songName: string().max(200).required(),
@@ -146,10 +147,15 @@ const ModalContentContainer: React.FunctionComponent<ModalContentContainerProps>
               <Text pb="4px" fontWeight="medium">
                 Skill Level
               </Text>
-              <Flex justifyContent="space-between">
+              <Grid
+                justifyContent="space-between"
+                gridTemplateColumns={['1fr', '1fr', 'repeat(4, 1fr)']}
+                justifyItems="center"
+              >
                 <Button
                   variantColor={handleButtonColor(1)}
-                  w="110px"
+                  w={['80%', '80%', 110]}
+                  m={['10px auto', '10px auto', '0px']}
                   size="sm"
                   onClick={skillLevelSetter(1)}
                 >
@@ -157,7 +163,8 @@ const ModalContentContainer: React.FunctionComponent<ModalContentContainerProps>
                 </Button>
                 <Button
                   variantColor={handleButtonColor(2)}
-                  w="110px"
+                  w={['80%', '80%', 110]}
+                  m={['10px auto', '10px auto', '0px']}
                   size="sm"
                   onClick={skillLevelSetter(2)}
                 >
@@ -165,7 +172,8 @@ const ModalContentContainer: React.FunctionComponent<ModalContentContainerProps>
                 </Button>
                 <Button
                   variantColor={handleButtonColor(3)}
-                  w="110px"
+                  w={['80%', '80%', 110]}
+                  m={['10px auto', '10px auto', '0px']}
                   size="sm"
                   onClick={skillLevelSetter(3)}
                 >
@@ -173,13 +181,14 @@ const ModalContentContainer: React.FunctionComponent<ModalContentContainerProps>
                 </Button>
                 <Button
                   variantColor={handleButtonColor(4)}
-                  w="110px"
+                  w={['80%', '80%', 110]}
+                  m={['10px auto', '10px auto', '0px']}
                   size="sm"
                   onClick={skillLevelSetter(4)}
                 >
                   Expert
                 </Button>
-              </Flex>
+              </Grid>
             </Box>
             <Flex justify="flex-end">
               <Button
