@@ -11,7 +11,9 @@ const ProfileLink = () => (
   <Box marginLeft="45px">
     <Link href="profile">
       <a>
-        <Text fontSize="sm">Profile</Text>
+        <Text fontSize="sm" fontWeight="bold">
+          Profile
+        </Text>
       </a>
     </Link>
   </Box>
@@ -67,7 +69,7 @@ const DesktopHeader = ({toggleModal}: DesktopHeaderProps) => {
             <a>
               <Box>
                 <Text fontSize="2xl" fontWeight="bold">
-                  My Application
+                  Songstack
                 </Text>
               </Box>
             </a>
@@ -76,7 +78,7 @@ const DesktopHeader = ({toggleModal}: DesktopHeaderProps) => {
             <ProfileLink />
           </Session.LoggedIn>
           <Session.LoggedIn>
-            <CreateMenu toggleModal={toggleModal} />
+            <CreateMenu toggleModal={toggleModal} segment="desktop" />
           </Session.LoggedIn>
         </Flex>
       </Box>
@@ -90,7 +92,7 @@ const DesktopHeader = ({toggleModal}: DesktopHeaderProps) => {
         <Session.LoggedIn>
           {(loadedSession: SessionModel) => (
             <Text fontSize="sm" mr="10px">
-              {loadedSession.user.name}
+              Welcome back, {loadedSession.user.name}!
             </Text>
           )}
         </Session.LoggedIn>

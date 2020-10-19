@@ -67,7 +67,7 @@ const Header: React.FunctionComponent<HeaderProps> = ({session, loading}) => {
     <Session session={session} loading={loading}>
       <CreateModal isOpen={modalOpen} closeModal={toggleModal} />
       <DesktopHeader toggleModal={toggleModal} />
-      <MobileHeader />
+      <MobileHeader toggleModal={toggleModal} />
     </Session>
   );
 };

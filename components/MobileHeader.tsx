@@ -6,7 +6,6 @@ import {
   Divider,
   Drawer,
   Text,
-  Link as ChakraLink,
   DrawerBody,
   DrawerFooter,
   DrawerHeader,
@@ -19,6 +18,7 @@ import Link from 'next/link';
 import {signOut} from 'next-auth/client';
 
 import Session from './Session';
+import CreateMenu from './CreateMenu';
 import {Session as SessionModel} from 'models';
 
 const MenuIcon = () => (
@@ -28,7 +28,11 @@ const MenuIcon = () => (
   </svg>
 );
 
-const MobileHeader = () => {
+interface MobileHeaderProps {
+  toggleModal: () => void;
+}
+
+const MobileHeader = ({toggleModal}: MobileHeaderProps) => {
   const [isMenuOpen, setMenuOpen] = useState(false);
   const btnRef = useRef();
 
@@ -36,14 +40,17 @@ const MobileHeader = () => {
     setMenuOpen(false);
   };
 
+  const openModal = (): void => {
+    closeMenu();
+    toggleModal();
+  };
+
   return (
     <Box height="75px" display={['block', 'block', 'none']} pos="relative" overflow="auto">
       <Link href="/">
         <a>
           <Box m="20px 20px">
-            <Text fontSize="2xl" fontWeight="bold">
-              My Application
-            </Text>
+            <Heading fontWeight="bold">Songstack</Heading>
           </Box>
         </a>
       </Link>
@@ -70,7 +77,7 @@ const MobileHeader = () => {
         <DrawerOverlay />
         <DrawerContent>
           <DrawerCloseButton h="50px" w="50px" top="20px" right="20px" />
-          <DrawerHeader height="75px">
+          <DrawerHeader height="75px" pt="20px" top="5px">
             <Link href="/">
               <a>
                 <Heading>Songstack</Heading>
@@ -102,6 +109,9 @@ const MobileHeader = () => {
                   <Heading as="h2" size="lg" fontWeight="400" marginY="15px">
                     Welcome back, {loadedSession.user.name}!
                   </Heading>
+                  <Box mb="25px">
+                    <CreateMenu toggleModal={openModal} segment="mobile" />
+                  </Box>
                   <Divider />
                   <Link href="profile">
                     <a>
