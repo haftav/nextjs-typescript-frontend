@@ -119,6 +119,7 @@ const ModalContentContainer: React.FunctionComponent<ModalContentContainerProps>
                 id="songName"
                 name="songName"
                 size="sm"
+                fontSize="16px"
                 value={formik.values.songName}
                 onChange={formik.handleChange}
               />
@@ -135,6 +136,7 @@ const ModalContentContainer: React.FunctionComponent<ModalContentContainerProps>
                 id="artist"
                 name="artist"
                 size="sm"
+                fontSize="16px"
                 value={formik.values.artist}
                 onChange={formik.handleChange}
               />
