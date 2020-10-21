@@ -20,6 +20,8 @@ import {
 import {useMutation, queryCache} from 'react-query';
 import {useFormik} from 'formik';
 import {string, object} from 'yup';
+
+import DeleteSongAlert from './DeleteSongAlert';
 import {makeProtectedRequest} from 'utils/http';
 import {Song} from 'models';
 
@@ -52,6 +54,7 @@ const ModalContentContainer: React.FunctionComponent<ModalContentContainerProps>
   initialData,
 }) => {
   const [skillLevel, setSkillLevel] = useState<number>(initialData.skill.value);
+  const [deleteAlertOpen, setDeleteAlertOpen] = useState(false);
   const toast = useToast();
   const [mutate, {status}] = useMutation(updateSong, {
     onSuccess: () => {
@@ -193,30 +196,48 @@ const ModalContentContainer: React.FunctionComponent<ModalContentContainerProps>
                 </Button>
               </Grid>
             </Box>
-            <Flex justify="flex-end">
-              <Button
-                isLoading={status === 'loading'}
-                variantColor="blue"
-                size="md"
-                textAlign="center"
-                mr="10px"
-                type="submit"
-              >
-                Update
-              </Button>
-              <Button
-                color="gray"
-                size="md"
-                textAlign="center"
-                variant="ghost"
-                onClick={closeModal}
-              >
-                Cancel
-              </Button>
+            <Flex justify="space-between">
+              <Box>
+                <Button
+                  variantColor="red"
+                  size="md"
+                  textAlign="center"
+                  onClick={() => setDeleteAlertOpen(true)}
+                >
+                  Delete
+                </Button>
+              </Box>
+              <Box>
+                <Button
+                  isLoading={status === 'loading'}
+                  variantColor="blue"
+                  size="md"
+                  textAlign="center"
+                  mr="10px"
+                  type="submit"
+                >
+                  Update
+                </Button>
+                <Button
+                  color="gray"
+                  size="md"
+                  textAlign="center"
+                  variant="ghost"
+                  onClick={closeModal}
+                >
+                  Cancel
+                </Button>
+              </Box>
             </Flex>
           </form>
         </ModalBody>
       </ModalContent>
+      <DeleteSongAlert
+        songId={initialData.id}
+        isOpen={deleteAlertOpen}
+        onClose={() => setDeleteAlertOpen(false)}
+        closeModal={closeModal}
+      />
     </>
   );
 };

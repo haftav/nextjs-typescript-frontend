@@ -76,6 +76,22 @@ const apiHandler: NextApiHandler = async (req, res) => {
   }
   if (req.method === 'DELETE') {
     // deleteHandler
+    return makeExternalRequest('DELETE', `${process.env.API_ENDPOINT}/api/${endpoint}`, {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((result) => {
+        return res.status(200).send(result.data);
+      })
+      .catch((err) => {
+        const status = parseInt(err.message, 10);
+        if (typeof status === 'number' && !isNaN(status)) {
+          return res.status(status).send(status);
+        }
+        return res.status(500).json({err});
+      });
   }
   return res.send(200);
 };
