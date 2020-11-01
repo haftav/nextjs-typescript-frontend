@@ -4,7 +4,11 @@ import {Box} from '@chakra-ui/core';
 
 import Header from './Header';
 
-const Layout = ({children}) => {
+interface LayoutProps {
+  children: React.ReactNode;
+}
+
+const Layout = ({children}: LayoutProps) => {
   const [session, loading] = useSession();
   return (
     <>
