@@ -9,7 +9,7 @@ const Layout = ({children}) => {
   return (
     <>
       <Header session={session} loading={loading} />
-      <Box padding={['25px 50px']} textAlign="center">
+      <Box padding={['25px 25px', '25px 50px']} textAlign="center">
         {children}
       </Box>
     </>

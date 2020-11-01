@@ -13,7 +13,6 @@ interface QueryPromise {
 }
 
 const Profile: FunctionComponent<{}> = () => {
-  const [openSongCard, setOpenSongCard] = useState<null | number>(null);
   const {status, data: songs} = useQuery<Song[]>(
     'songs',
     () => {
@@ -34,29 +33,13 @@ const Profile: FunctionComponent<{}> = () => {
     {retry: false}
   );
 
-  // close over index so inner function knows which card to set as open
-  const setOpenCard = (idx) => (isCurrentlyOpen: boolean) => {
-    setOpenSongCard(isCurrentlyOpen ? null : idx);
-  };
-
   const renderLoading = () => <div>Loading songs...</div>;
 
   const renderSongs = () => {
     return (
       <>
         <Heading>Songs</Heading>
-        <div>
-          {songs
-            ? songs.map((song, idx) => (
-                <SongCard
-                  isOpen={idx === openSongCard}
-                  setOpenCard={setOpenCard(idx)}
-                  key={song.id}
-                  song={song}
-                />
-              ))
-            : null}
-        </div>
+        <div>{songs ? songs.map((song) => <SongCard key={song.id} song={song} />) : null}</div>
       </>
     );
   };

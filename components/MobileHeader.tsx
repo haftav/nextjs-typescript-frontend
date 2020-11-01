@@ -50,7 +50,9 @@ const MobileHeader = ({toggleModal}: MobileHeaderProps) => {
       <Box m="20px 20px">
         <Link href="/">
           <a>
-            <Heading display="inline-block" px=".2em" fontWeight="bold">Songstack</Heading>
+            <Heading display="inline-block" px=".2em" fontWeight="bold">
+              Songstack
+            </Heading>
           </a>
         </Link>
       </Box>
