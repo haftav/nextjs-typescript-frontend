@@ -1,15 +1,5 @@
 import React, {FunctionComponent, useState} from 'react';
-import {
-  Collapse,
-  Button,
-  Box,
-  Badge,
-  Heading,
-  PseudoBox,
-  Text,
-  useToast,
-  Grid,
-} from '@chakra-ui/core';
+import {Button, Box, Badge, Heading, Text, useToast, Flex, IconButton} from '@chakra-ui/core';
 import {useMutation, queryCache} from 'react-query';
 import {makeProtectedRequest} from 'utils/http';
 
@@ -43,13 +33,9 @@ const updateSong = (params: SongUpdaterParams) => {
 
 interface Props {
   song: Song;
-  isOpen: boolean;
-  setOpenCard: (isCurrentlyOpen: boolean) => void;
 }
 
-// TODO -> convert buttons into reusable component
-const SongCard: FunctionComponent<Props> = ({song, isOpen, setOpenCard}) => {
-  // const [isOpen, setIsOpen] = useState<boolean>(false);
+const SongCard: FunctionComponent<Props> = ({song}) => {
   const [isEditing, setIsEditing] = useState(false);
   const toast = useToast();
 
@@ -89,34 +75,13 @@ const SongCard: FunctionComponent<Props> = ({song, isOpen, setOpenCard}) => {
     },
   });
 
-  const handleClick = (): void => {
-    // setIsOpen((prevState) => !prevState);
-    setOpenCard(isOpen);
-  };
-
-  const handleKeyPress = (e: React.KeyboardEvent<HTMLDivElement>): void => {
-    e.stopPropagation();
-    if (e.key === 'Enter') {
-      handleClick();
-    }
-  };
-
-  // close over skillLevel argument for use in event handler
-  const handleButtonClick = (skillLevel: number) => () => {
+  const handleButtonClick = (type: 'decrease' | 'increase') => () => {
     const songData = {
       id: song.id,
-      skillLevel,
+      skillLevel: song.skill.value += type === 'decrease' ? -1 : 1,
     };
 
     mutate(songData);
-  };
-
-  const handleButtonColor = (level) => {
-    if (song.skill.value === level) {
-      return 'green';
-    }
-
-    return 'gray';
   };
 
   const toggleEditing = (e?: React.MouseEvent) => {
@@ -127,99 +92,56 @@ const SongCard: FunctionComponent<Props> = ({song, isOpen, setOpenCard}) => {
   };
 
   return (
-    <PseudoBox
-      role="group"
-      maxW="3xl"
-      my={5}
-      mx="auto"
-      position="relative"
-      borderWidth="1px"
-      rounded="lg"
-      onClick={handleClick}
-      onKeyDown={handleKeyPress}
-      _hover={{cursor: 'pointer'}}
-      tabIndex={0}
-    >
-      <Button
-        w="10px"
-        h="35px"
-        variant="ghost"
-        size="sm"
-        fontSize="2xl"
-        pos="absolute"
-        right="-40px"
-        top="50%"
-        pl="0px"
-        pr="0px"
-        minW="25px"
-        transform="translateY(-50%)"
-        zIndex={15}
-        onClick={toggleEditing}
-      >
-        &#8942;
-      </Button>
-      <Box mb={5} p="15px 15px 0px 15px">
-        <Heading as="h2" fontSize={['md', 'lg']} textAlign="left" maxW="80%">
-          {song.songName}
-        </Heading>
-        <Text fontSize="md" textAlign="left" maxW="80%">
-          {song.artist}
-        </Text>
-        <Box position="absolute" top="15px" right="15px" w="auto" h="auto">
-          <Box opacity={1} pos="absolute" right="0">
+    <Box maxW="3xl" my={5} mx="auto" position="relative" borderWidth="1px" rounded="lg">
+      <Box p="15px 15px 0px 15px">
+        <Flex justify="space-between">
+          <Heading display="block" as="h2" fontSize={['md', 'lg']} textAlign="left" maxW="80%">
+            {song.songName}
+          </Heading>
+          <Box ml=".5em">
             <Badge fontSize={['10px', '12px']}>{song.skill.defaultTitle}</Badge>
           </Box>
-        </Box>
-        <SkillLevel mt="15px" rating={song.skill.value as Rating} />
+        </Flex>
+        <Text fontSize="md" textAlign="left" maxW="80%" lineHeight="1em" mt=".2em">
+          {song.artist}
+        </Text>
+        <Flex justify="space-between" align="center">
+          <IconButton
+            icon="chevron-left"
+            size="sm"
+            fontSize="2em"
+            h="2rem"
+            variant="ghost"
+            aria-label="Decrease skill level"
+            isDisabled={song.skill.value === 1}
+            onClick={handleButtonClick('decrease')}
+          >
+            Left
+          </IconButton>
+          <Box w="100%" px=".5em">
+            <SkillLevel my="1.5em" rating={song.skill.value as Rating} />
+          </Box>
+          <IconButton
+            icon="chevron-right"
+            size="sm"
+            fontSize="2em"
+            h="2rem"
+            variant="ghost"
+            aria-label="Increase skill level"
+            isDisabled={song.skill.value === 4}
+            onClick={handleButtonClick('increase')}
+          >
+            Right
+          </IconButton>
+        </Flex>
       </Box>
-      <Collapse
-        as={Grid}
-        isOpen={isOpen}
-        pt="15px"
-        pb="15px"
-        gridTemplateColumns={['1fr', '1fr', 'repeat(4, 1fr)']}
-        justifyItems="center"
-        onClick={(e) => e.stopPropagation()}
-      >
-        <Button
-          size="sm"
-          w={['80%', '80%', 150]}
-          m={['10px auto', '10px auto', '0px']}
-          variantColor={handleButtonColor(1)}
-          onClick={handleButtonClick(1)}
-        >
-          Beginner
-        </Button>
-        <Button
-          size="sm"
-          w={['80%', '80%', 150]}
-          m={['10px auto', '10px auto', '0px']}
-          variantColor={handleButtonColor(2)}
-          onClick={handleButtonClick(2)}
-        >
-          Intermediate
-        </Button>
-        <Button
-          size="sm"
-          w={['80%', '80%', 150]}
-          m={['10px auto', '10px auto', '0px']}
-          variantColor={handleButtonColor(3)}
-          onClick={handleButtonClick(3)}
-        >
-          Advanced
-        </Button>
-        <Button
-          size="sm"
-          w={['80%', '80%', 150]}
-          m={['10px auto', '10px auto', '0px']}
-          variantColor={handleButtonColor(4)}
-          onClick={handleButtonClick(4)}
-        >
-          Expert
-        </Button>
-      </Collapse>
       <EditModal isOpen={isEditing} closeModal={toggleEditing} initialData={song} />
-    </PseudoBox>
+      <Box textAlign="left" p="0 1em 1em">
+        <Button h="2em" size="sm" onClick={toggleEditing}>
+          Edit
+        </Button>
+      </Box>
+    </Box>
   );
 };
 
