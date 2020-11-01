@@ -127,42 +127,12 @@ const SongCard: FunctionComponent<Props> = ({song, isOpen, setOpenCard}) => {
   };
 
   return (
-    <PseudoBox
-      role="group"
-      maxW="3xl"
-      my={5}
-      mx="auto"
-      position="relative"
-      borderWidth="1px"
-      rounded="lg"
-      onClick={handleClick}
-      onKeyDown={handleKeyPress}
-      _hover={{cursor: 'pointer'}}
-      tabIndex={0}
-    >
-      <Button
-        w="10px"
-        h="35px"
-        variant="ghost"
-        size="sm"
-        fontSize="2xl"
-        pos="absolute"
-        right="-40px"
-        top="50%"
-        pl="0px"
-        pr="0px"
-        minW="25px"
-        transform="translateY(-50%)"
-        zIndex={15}
-        onClick={toggleEditing}
-      >
-        &#8942;
-      </Button>
-      <Box mb={5} p="15px 15px 0px 15px">
+    <Box maxW="3xl" my={5} mx="auto" position="relative" borderWidth="1px" rounded="lg">
+      <Box p="15px 15px 0px 15px">
         <Heading as="h2" fontSize={['md', 'lg']} textAlign="left" maxW="80%">
           {song.songName}
         </Heading>
-        <Text fontSize="md" textAlign="left" maxW="80%">
+        <Text fontSize="md" textAlign="left" maxW="80%" lineHeight="1em" mt=".2em">
           {song.artist}
         </Text>
         <Box position="absolute" top="15px" right="15px" w="auto" h="auto">
@@ -170,9 +140,9 @@ const SongCard: FunctionComponent<Props> = ({song, isOpen, setOpenCard}) => {
             <Badge fontSize={['10px', '12px']}>{song.skill.defaultTitle}</Badge>
           </Box>
         </Box>
-        <SkillLevel mt="15px" rating={song.skill.value as Rating} />
+        <SkillLevel my="1.5em" rating={song.skill.value as Rating} />
       </Box>
-      <Collapse
+      {/* <Collapse
         as={Grid}
         isOpen={isOpen}
         pt="15px"
@@ -217,9 +187,14 @@ const SongCard: FunctionComponent<Props> = ({song, isOpen, setOpenCard}) => {
         >
           Expert
         </Button>
-      </Collapse>
+      </Collapse> */}
       <EditModal isOpen={isEditing} closeModal={toggleEditing} initialData={song} />
-    </PseudoBox>
+      <Box textAlign="left" p="0 1em 1em">
+        <Button h="2em" size="sm" onClick={toggleEditing}>
+          Edit
+        </Button>
+      </Box>
+    </Box>
   );
 };
 

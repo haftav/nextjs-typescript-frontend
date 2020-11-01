@@ -47,7 +47,7 @@ const Gradient: FunctionComponent<GradientProps> = ({rating}) => {
       data-testid="gradient-svg"
       xmlns="http://www.w3.org/2000/svg"
       version="1.1"
-      style={{width: '100%', height: 10}}
+      style={{width: '100%', height: 12}}
       css={css`
         stop {
           transition: stop-color 0.3s ease-out;
