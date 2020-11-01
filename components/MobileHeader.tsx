@@ -47,13 +47,13 @@ const MobileHeader = ({toggleModal}: MobileHeaderProps) => {
 
   return (
     <Box height="75px" display={['block', 'block', 'none']} pos="relative" overflow="auto">
-      <Link href="/">
-        <a>
-          <Box m="20px 20px">
-            <Heading fontWeight="bold">Songstack</Heading>
-          </Box>
-        </a>
-      </Link>
+      <Box m="20px 20px">
+        <Link href="/">
+          <a>
+            <Heading display="inline-block" px=".2em" fontWeight="bold">Songstack</Heading>
+          </a>
+        </Link>
+      </Box>
       <Flex
         h="50px"
         w="50px"
