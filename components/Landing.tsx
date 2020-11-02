@@ -1,6 +1,7 @@
 import React from 'react';
 import {Box, Button, Flex, Heading} from '@chakra-ui/core';
 import Image from 'next/image';
+import Link from 'next/link';
 
 import Gradient from './Gradient';
 
@@ -17,6 +18,7 @@ const Landing = () => {
       >
         <Gradient
           rating={1}
+          id="gradient-1"
           fadeIn
           customStyle={{
             position: 'absolute',
@@ -31,6 +33,7 @@ const Landing = () => {
         />
         <Gradient
           rating={2}
+          id="gradient-2"
           fadeIn
           customStyle={{
             position: 'absolute',
@@ -45,6 +48,7 @@ const Landing = () => {
         />
         <Gradient
           rating={3}
+          id="gradient-3"
           fadeIn
           customStyle={{
             position: 'absolute',
@@ -59,6 +63,7 @@ const Landing = () => {
         />
         <Gradient
           rating={4}
+          id="gradient-4"
           fadeIn
           customStyle={{
             position: 'absolute',
@@ -91,12 +96,25 @@ const Landing = () => {
             justify={['center', 'center', 'flex-start']}
             align={['center']}
           >
-            <Button m={['0.8em', '1.2em', '1.5em']} size="lg" d={['inline-block']} width="150px">
-              Get Started
-            </Button>
-            <Button size="lg" d={['inline-block']} width="150px">
-              Log In
-            </Button>
+            <Link href="/register">
+              <a tabIndex={-1}>
+                <Button
+                  m={['0.8em', '1.2em', '1.5em']}
+                  size="lg"
+                  d={['inline-block']}
+                  width="150px"
+                >
+                  Get Started
+                </Button>
+              </a>
+            </Link>
+            <Link href="/login">
+              <a tabIndex={-1}>
+                <Button size="lg" d={['inline-block']} width="150px">
+                  Log In
+                </Button>
+              </a>
+            </Link>
           </Flex>
         </Box>
         <Box display={['none', 'none', 'block']} flex="2 5 304px">

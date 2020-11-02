@@ -88,19 +88,19 @@ const MobileHeader = ({toggleModal}: MobileHeaderProps) => {
           </DrawerHeader>
           <DrawerBody>
             <Session.LoggedOut>
-              <Link href="/login">
+              <Link href="/register">
                 <a>
                   <Button variant="solid" w="100%" h="50px" fontSize="1.2em" m="10px auto">
-                    Log In
+                    Sign Up
                   </Button>
                 </a>
               </Link>
             </Session.LoggedOut>
             <Session.LoggedOut>
-              <Link href="/register">
+              <Link href="/login">
                 <a>
                   <Button variant="solid" w="100%" h="50px" fontSize="1.2em" m="10px auto">
-                    Sign Up
+                    Log In
                   </Button>
                 </a>
               </Link>

@@ -12,7 +12,9 @@ interface LandingPageProps {
 
 const LandingPage = ({session}: LandingPageProps) => {
   return (
-    <Layout>{session ? <h2>You are logged in as {session.user.name}</h2> : <Landing />}</Layout>
+    <Layout fullScreen>
+      {session ? <h2>You are logged in as {session.user.name}</h2> : <Landing />}
+    </Layout>
   );
 };
 

@@ -84,10 +84,10 @@ const DesktopHeader = ({toggleModal}: DesktopHeaderProps) => {
       </Box>
       <Flex position="absolute" right="25px" align="center">
         <Session.LoggedOut>
-          <LoginLink />
+          <RegisterLink />
         </Session.LoggedOut>
         <Session.LoggedOut>
-          <RegisterLink />
+          <LoginLink />
         </Session.LoggedOut>
         <Session.LoggedIn>
           {(loadedSession: SessionModel) => (
