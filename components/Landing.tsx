@@ -4,19 +4,18 @@ import Image from 'next/image';
 
 const Landing = () => {
   return (
-    <Box>
+    <Box maxW="1500px" m="auto">
       <Flex h="auto">
-        <Box
-          border="1px solid red"
-          p="2em"
-          flex="3 1 20em"
-          textAlign={['center', 'center', 'left']}
-        >
+        <Box p={['0', '2em']} flex="5 1 10em" textAlign={['center', 'center', 'left']}>
           <Heading
             as="h1"
             size="2xl"
-            m={['2em auto 1.5em', '2em auto 1.5em', '2em 2em 1.5em 0.5em']}
-            w={['90%']}
+            mt="2em"
+            mb="1.5em"
+            mx={['auto', 'auto', '0px']}
+            pl={['0', '0', '0.5em']}
+            w={['100%', 'auto', '9em', '9em']}
+            maxW="15em"
           >
             Track your musical progress.
           </Heading>
@@ -33,8 +32,8 @@ const Landing = () => {
             </Button>
           </Flex>
         </Box>
-        <Box display={['none', 'none', 'block']} border="1px solid blue" flex="2 5 auto">
-          <Box w={['150px', '150px', '200px', '200px']} pl="2em" mt="2em">
+        <Box display={['none', 'none', 'block']} flex="2 5 304px">
+          <Box maxW={['150px', '150px', '200px', '200px']} pl="2em" mt="2em">
             <Image
               src="/guitar.png"
               alt="Picture of guitar"
