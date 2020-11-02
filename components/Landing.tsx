@@ -7,62 +7,71 @@ import Gradient from './Gradient';
 const Landing = () => {
   return (
     <Box maxW="1500px" w="100%" m="auto" position="relative">
-      <Gradient
-        rating={1}
-        fadeIn
-        customStyle={{
-          position: 'absolute',
-          top: 0,
-          right: -70,
-          width: '200vh',
-          height: 20,
-          transform: 'rotate(-60deg)',
-          transformOrigin: 'right center',
-          borderRadius: 10,
-        }}
-      />
-      <Gradient
-        rating={2}
-        fadeIn
-        customStyle={{
-          position: 'absolute',
-          top: 50,
-          right: -72,
-          width: '200vh',
-          height: 20,
-          transform: 'rotate(-65deg)',
-          transformOrigin: 'right center',
-          borderRadius: 10,
-        }}
-      />
-      <Gradient
-        rating={3}
-        fadeIn
-        customStyle={{
-          position: 'absolute',
-          top: 110,
-          right: -75,
-          width: '200vh',
-          height: 20,
-          transform: 'rotate(-70deg)',
-          transformOrigin: 'right center',
-          borderRadius: 10,
-        }}
-      />
-      <Gradient
-        rating={4}
-        fadeIn
-        customStyle={{
-          position: 'absolute',
-          top: 180,
-          right: -77,
-          width: '200vh',
-          height: 20,
-          transform: 'rotate(-77deg)',
-          transformOrigin: 'right center',
-          borderRadius: 10,
-        }}
-      />
+      <Box
+        position="relative"
+        right="-400px"
+        top={['100px', '50px', '-50px', '-150px']}
+        transform="rotate(21deg)"
+        transformOrigin="right center"
+        opacity={0.9}
+      >
+        <Gradient
+          rating={1}
+          fadeIn
+          customStyle={{
+            position: 'absolute',
+            top: 0,
+            right: 0,
+            width: '400vh',
+            height: 20,
+            transform: 'rotate(-55deg)',
+            transformOrigin: 'right center',
+            borderRadius: 10,
+          }}
+        />
+        <Gradient
+          rating={2}
+          fadeIn
+          customStyle={{
+            position: 'absolute',
+            top: 0,
+            right: 0,
+            width: '400vh',
+            height: 20,
+            transform: 'rotate(-60deg)',
+            transformOrigin: 'right center',
+            borderRadius: 10,
+          }}
+        />
+        <Gradient
+          rating={3}
+          fadeIn
+          customStyle={{
+            position: 'absolute',
+            top: 0,
+            right: 0,
+            width: '400vh',
+            height: 20,
+            transform: 'rotate(-65deg)',
+            transformOrigin: 'right center',
+            borderRadius: 10,
+          }}
+        />
+        <Gradient
+          rating={4}
+          fadeIn
+          customStyle={{
+            position: 'absolute',
+            top: 0,
+            right: 0,
+            width: '400vh',
+            height: 20,
+            transform: 'rotate(-70deg)',
+            transformOrigin: 'right center',
+            borderRadius: 10,
+          }}
+        />
+      </Box>
       <Flex h="auto">
         <Box p={['0', '2em']} flex="5 1 10em" textAlign={['center', 'center', 'left']}>
           <Heading
