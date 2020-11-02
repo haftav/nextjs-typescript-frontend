@@ -90,7 +90,7 @@ const DesktopHeader = ({toggleModal}: DesktopHeaderProps) => {
         <Session.LoggedIn>
           {(loadedSession: SessionModel) => (
             <Text fontSize="sm" mr="10px">
-              Welcome back, {loadedSession.user.name}!
+              {loadedSession.user.name}
             </Text>
           )}
         </Session.LoggedIn>

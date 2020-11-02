@@ -4,6 +4,7 @@ import {getSession} from 'next-auth/client';
 
 import Layout from 'components/Layout';
 import Landing from 'components/Landing';
+import AuthenticatedLanding from 'components/AuthenticatedLanding';
 import {Session} from 'models';
 
 interface LandingPageProps {
@@ -12,9 +13,7 @@ interface LandingPageProps {
 
 const LandingPage = ({session}: LandingPageProps) => {
   return (
-    <Layout fullScreen>
-      {session ? <h2>You are logged in as {session.user.name}</h2> : <Landing />}
-    </Layout>
+    <Layout fullScreen>{session ? <AuthenticatedLanding session={session} /> : <Landing />}</Layout>
   );
 };
 
