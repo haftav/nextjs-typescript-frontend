@@ -82,25 +82,25 @@ const MobileHeader = ({toggleModal}: MobileHeaderProps) => {
           <DrawerHeader height="75px" pt="20px" top="5px">
             <Link href="/">
               <a>
-                <Heading>Songstack</Heading>
+                <Heading display="inline">Songstack</Heading>
               </a>
             </Link>
           </DrawerHeader>
           <DrawerBody>
             <Session.LoggedOut>
-              <Link href="/login">
-                <a>
+              <Link href="/register">
+                <a tabIndex={-1}>
                   <Button variant="solid" w="100%" h="50px" fontSize="1.2em" m="10px auto">
-                    Log In
+                    Sign Up
                   </Button>
                 </a>
               </Link>
             </Session.LoggedOut>
             <Session.LoggedOut>
-              <Link href="/register">
-                <a>
+              <Link href="/login">
+                <a tabIndex={-1}>
                   <Button variant="solid" w="100%" h="50px" fontSize="1.2em" m="10px auto">
-                    Sign Up
+                    Log In
                   </Button>
                 </a>
               </Link>
