@@ -2,9 +2,67 @@ import React from 'react';
 import {Box, Button, Flex, Heading} from '@chakra-ui/core';
 import Image from 'next/image';
 
+import Gradient from './Gradient';
+
 const Landing = () => {
   return (
-    <Box maxW="1500px" m="auto">
+    <Box maxW="1500px" w="100%" m="auto" position="relative">
+      <Gradient
+        rating={1}
+        fadeIn
+        customStyle={{
+          position: 'absolute',
+          top: 0,
+          right: -70,
+          width: '200vh',
+          height: 20,
+          transform: 'rotate(-60deg)',
+          transformOrigin: 'right center',
+          borderRadius: 10,
+        }}
+      />
+      <Gradient
+        rating={2}
+        fadeIn
+        customStyle={{
+          position: 'absolute',
+          top: 50,
+          right: -72,
+          width: '200vh',
+          height: 20,
+          transform: 'rotate(-65deg)',
+          transformOrigin: 'right center',
+          borderRadius: 10,
+        }}
+      />
+      <Gradient
+        rating={3}
+        fadeIn
+        customStyle={{
+          position: 'absolute',
+          top: 110,
+          right: -75,
+          width: '200vh',
+          height: 20,
+          transform: 'rotate(-70deg)',
+          transformOrigin: 'right center',
+          borderRadius: 10,
+        }}
+      />
+      <Gradient
+        rating={4}
+        fadeIn
+        customStyle={{
+          position: 'absolute',
+          top: 180,
+          right: -77,
+          width: '200vh',
+          height: 20,
+          transform: 'rotate(-77deg)',
+          transformOrigin: 'right center',
+          borderRadius: 10,
+        }}
+      />
       <Flex h="auto">
         <Box p={['0', '2em']} flex="5 1 10em" textAlign={['center', 'center', 'left']}>
           <Heading
@@ -46,6 +104,7 @@ const Landing = () => {
           </Box>
         </Box>
       </Flex>
+      <Box h="2000px"></Box>
     </Box>
   );
 };

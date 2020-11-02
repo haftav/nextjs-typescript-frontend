@@ -13,7 +13,7 @@ const Layout = ({children}: LayoutProps) => {
   return (
     <>
       <Header session={session} loading={loading} />
-      <Box padding={['25px 25px', '25px 50px']} textAlign="center">
+      <Box padding={['25px 25px', '25px 50px']} textAlign="center" overflow="hidden">
         {children}
       </Box>
     </>

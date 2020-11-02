@@ -35,19 +35,28 @@ const gradients: GradientList = {
   },
 };
 
+const defaultStyles = {
+  width: '100%',
+  height: 10,
+};
+
 interface GradientProps {
   rating: Rating;
+  customStyle?: React.CSSProperties;
+  fadeIn?: boolean;
+  fadeOut?: boolean;
 }
 
-const Gradient: FunctionComponent<GradientProps> = ({rating}) => {
+const Gradient: FunctionComponent<GradientProps> = ({rating, customStyle, fadeIn, fadeOut}) => {
   const id: string = useMemo(() => uuidv4(), []);
+  const style = customStyle ? customStyle : defaultStyles;
   const gradient = gradients[rating];
   return (
     <svg
       data-testid="gradient-svg"
       xmlns="http://www.w3.org/2000/svg"
       version="1.1"
-      style={{width: '100%', height: 12}}
+      style={style}
       css={css`
         stop {
           transition: stop-color 0.3s ease-out;
@@ -61,7 +70,7 @@ const Gradient: FunctionComponent<GradientProps> = ({rating}) => {
             offset="0%"
             style={{
               stopColor: gradient.start,
-              stopOpacity: 1,
+              stopOpacity: fadeIn ? 0 : 1,
             }}
           />
           <stop
@@ -69,7 +78,7 @@ const Gradient: FunctionComponent<GradientProps> = ({rating}) => {
             offset="100"
             style={{
               stopColor: gradient.end,
-              stopOpacity: 1,
+              stopOpacity: fadeOut ? 0 : 1,
             }}
           />
         </linearGradient>
