@@ -21,7 +21,7 @@ const ProfileLink = () => (
 
 const LoginLink = () => (
   <Link href="/login">
-    <a>
+    <a tabIndex={-1}>
       <Button variant="outline" w="100px" m="0px 10px">
         Log In
       </Button>
@@ -31,7 +31,7 @@ const LoginLink = () => (
 
 const RegisterLink = () => (
   <Link href="/register">
-    <a>
+    <a tabIndex={-1}>
       <Button variant="outline" w="100px" m="0px 10px">
         Sign Up
       </Button>
@@ -67,11 +67,9 @@ const DesktopHeader = ({toggleModal}: DesktopHeaderProps) => {
         <Flex align="center">
           <Link href="/">
             <a>
-              <Box>
-                <Text fontSize="2xl" fontWeight="bold">
-                  Songstack
-                </Text>
-              </Box>
+              <Text fontSize="2xl" fontWeight="bold">
+                Songstack
+              </Text>
             </a>
           </Link>
           <Session.LoggedIn>
