@@ -70,7 +70,7 @@ const ModalContentContainer: React.FunctionComponent<ModalContentContainerProps>
     onError: () => {
       toast({
         title: 'An error occurred.',
-        description: 'Unable to create new song.',
+        description: 'Unable to update song.',
         status: 'error',
         duration: 5000,
         isClosable: true,
