@@ -10,19 +10,27 @@ import {
 } from '@chakra-ui/core';
 import {useMutation} from 'react-query';
 import {signIn} from 'next-auth/client';
-import {useFormik} from 'formik';
+import {FormikErrors, useFormik} from 'formik';
 
 import Layout from '../components/Layout';
-import {makeRequest} from 'utils/http';
 import {string, object} from 'yup';
 
 const createUser = ({userData}) => {
-  return makeRequest('POST', '/user/signup', {
+  return fetch(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/api/user/signup`, {
+    method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify(userData),
-  }).then((data) => data);
+  })
+    .then((res) => {
+      if (!res.ok) {
+        throw new Error(res.status.toString());
+      }
+
+      return res.json();
+    })
+    .then((data) => data);
 };
 
 const FormSchema = object().shape({
@@ -32,7 +40,7 @@ const FormSchema = object().shape({
 
 const Register: FunctionComponent<{}> = () => {
   // TODO -> update mutation logic to use proper callbacks
-  const [mutate, {error}] = useMutation(createUser, {
+  const [mutate] = useMutation(createUser, {
     throwOnError: true,
   });
 
@@ -42,7 +50,7 @@ const Register: FunctionComponent<{}> = () => {
       password: '',
     },
     validationSchema: FormSchema,
-    onSubmit: async (values) => {
+    onSubmit: async (values, {setErrors}) => {
       const userData = {
         username: values.username,
         password: values.password,
@@ -55,8 +63,13 @@ const Register: FunctionComponent<{}> = () => {
           callbackUrl: `${process.env.NEXT_PUBLIC_CALLBACK_URL}/profile`,
         });
       } catch (err) {
-        console.log('unable to sign in.');
-        console.error(error);
+        const errors: FormikErrors<{username: string; name: string}> = {};
+
+        if ((err as Error).message === '409') {
+          errors.username = 'Duplicate username. Please choose a unique username.';
+        }
+
+        setErrors(errors);
       }
     },
   });
